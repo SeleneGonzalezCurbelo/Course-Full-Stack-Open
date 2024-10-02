@@ -8,3 +8,5 @@ This repository contains the exercises and projects of a Web Development course.
 1. [Introduction to React](./part1)  
 
 2. [Communicating with the server](./part2)  
+
+3. [Programming a server with NodeJS and Express](./part3) 
