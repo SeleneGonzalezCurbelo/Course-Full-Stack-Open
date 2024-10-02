@@ -1,5 +1,15 @@
 # Communicating with the server
 
+## Table of Contents
+
+- [Communicating with the server](#communicating-with-the-server)
+- [About This Repository](#about-this-repository)
+- [Available Applications](#available-applications)
+- [How to Run the Projects](#how-to-run-the-projects)
+- [Next Project](#next-project)
+
+## About This Repository
+
 This repository covers the communication between a React application and a backend server.
 
 ## Available Applications
@@ -13,28 +23,31 @@ This repository covers the communication between a React application and a backe
 3. [Phonebook](./phonebook)  
    This application is a phonebook that allows adding, deleting, and modifying contact information.
 
-## How to use
+## How to Run the Projects
 
 Follow these steps to set up and run the project:
 
 1. **Clone the Repository:**
+   If you haven't already cloned the main repository, you can do so by running:
    ```bash
-   git clone https://github.com/SeleneGonzalezCurbelo/Course-Full-Stack-Open/part2
-2. **Navigate to the Project Directory**
+   git clone https://github.com/SeleneGonzalezCurbelo/Course-Full-Stack-Open.git
+2. **Navigate to the Part 2 Directory:**
    ```bash
-   cd courseinfo || cd phonebook || cd countries
-4. **Install Node.js**
-5. **Install npm**. You can verify the installation by running: 
+   cd Course-Full-Stack-Open/part2
+3. **Move to the Specific Project Directory (choose one):**
     ```bash
-    npm -v
-6. **Install Project Dependencies**: 
+   cd courseinfo
+4. **Install Project Dependencies: Make sure you have Node.js and npm installed. Then, run:**
     ```bash
     npm install
-7. **Start the Application**: To run the application in development mode, use:
-     ```bash
-     npm run start
-8. **For Phonebook:** in another terminal:
+5. **Start the Application:** Run the following command to start the development server:
+    ```bash
+    npm run start
+6. **For Phonebook** (in another terminal):
     ```bash
      npm run server
+7. **Access the Application:** The app will be running on http://localhost:3000.
 
-The application will be accessible at http://localhost:3000
+## Next Project 
+
+ - Proceed to Part 3: [Programming a server with NodeJS and Express](../part3/)
