@@ -1,4 +1,4 @@
-# Courseinfo
+# Course Info
 
 The features of this application:
 

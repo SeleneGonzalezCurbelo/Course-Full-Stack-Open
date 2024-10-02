@@ -1,0 +1,47 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin-left: 2%;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.Numbers {
+  align-items: center;
+}
+
+.Delete-button {
+  border-radius: 5%;
+  margin: 10px; 
+  border-color: white;
+  height: 10%;
+}
+
+.Delete-button:hover {
+  background-color: blue;
+}
+
+.MessageAdd {
+  color: green;
+  background: lightgrey;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 1%;
+  margin: 2%;
+}
+
+.MessageError {
+  color: red;
+  background: lightgrey;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 1%;
+  margin: 2%;
+}
