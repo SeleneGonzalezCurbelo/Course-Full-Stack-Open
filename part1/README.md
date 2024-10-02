@@ -14,7 +14,7 @@ Follow these steps to set up and run the project:
    git clone https://github.com/SeleneGonzalezCurbelo/Course-Full-Stack-Open/part1
 2. **Navigate to the Project Directory**
    ```bash
-   cd unicafe/courseinfo/anecdotes
+   cd unicafe || cd courseinfo || cd anecdotes
 4. **Install Node.js**
 5. **Install npm**. You can verify the installation by running: 
     ```bash
