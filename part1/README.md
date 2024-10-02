@@ -34,13 +34,6 @@ Follow these steps to set up and run the project:
     ```bash
     npm install
 7. **Start the Application**: To run the application in development mode, use:
-<<<<<<< HEAD
     ```bash
     npm run start
 The application will be accessible at http://localhost:3000
-=======
-     ```bash
-     npm run start
-
-The application will be accessible at http://localhost:3000
->>>>>>> origin/main
