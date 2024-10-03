@@ -7,8 +7,12 @@ import axios from 'axios'
 const promise = axios.get('https://course-full-stack-open.onrender.com/api/persons')
 
 promise.then(response => {
+  console.log('Data fetched successfully:', response.data);
   ReactDOM.createRoot(document.getElementById('root')).render(<App />)
 })
+.catch(error => {
+  console.error('Error fetching persons:', error);
+});
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
