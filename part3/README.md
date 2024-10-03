@@ -1,6 +1,6 @@
 # Programming a server with NodeJS and Express
 
-## 📑 Table of Contents
+## Table of Contents
 
 - [Programming a server with NodeJS and Express](#programming-a-server-with-nodejs-and-express)
 - [About This Repository](#about-this-repository)
