@@ -18,6 +18,9 @@ const App = () => {
         .getAll()
         .then(response => {
           setPersons(response.data);
+        })
+        .catch(error => {
+          console.error('Error fetching persons:', error);
         });
   }, []);
   
