@@ -13,18 +13,32 @@ const App = () => {
   const [addPersonMessage, setAddPersonMessage] = useState(null);
   const [isSuccess, setIsSuccess] = useState(true)
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     personsService
         .getAll()
         .then(response => {
           setPersons(response.data);
+          setLoading(false);
         })
         .catch(error => {
           console.error('Error fetching persons:', error);
+          setError('Error fetching persons');
+          setLoading(false); 
         });
   }, []);
   
   console.log('render', persons.length, 'persons')
+
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
+
+  if (error) {
+    return <div>{error}</div>; 
+  }
 
   const handleNameChange = (event) => setNewName(event.target.value);
   const handleNumberChange = (event) => setNumber(event.target.value);
