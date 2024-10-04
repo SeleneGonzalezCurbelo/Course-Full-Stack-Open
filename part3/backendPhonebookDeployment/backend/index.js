@@ -1,5 +1,4 @@
 const http = require('http')
-const path = require('path');
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
@@ -8,7 +7,6 @@ const cors = require('cors')
 app.use(express.json())
 app.use(cors())
 app.use(express.static('public'));
-app.use(express.static(path.join(__dirname, 'public')));
 
 morgan.token('body', (req) => {
     return req.method === 'POST' ? JSON.stringify(req.body) : ''
@@ -43,10 +41,6 @@ let persons = [
         "number": "4-23-6423122"
       }
 ]
-
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    });
 
     app.get('/api/persons/:id', (request, response) => {
         const id = Number(request.params.id)

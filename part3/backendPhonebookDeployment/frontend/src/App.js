@@ -131,7 +131,11 @@ const App = () => {
         addNewName = { addNewName } 
       />
       <h2>Numbers</h2>
-      <Persons persons={personsToShow} handleDelete={handleDeleteChange} />
+      {personsToShow.length > 0 ? (
+        <Persons persons={personsToShow} handleDelete={handleDeleteChange} />
+      ) : (
+        <div>No results found</div>
+      )}
     </div>
   )
 }
