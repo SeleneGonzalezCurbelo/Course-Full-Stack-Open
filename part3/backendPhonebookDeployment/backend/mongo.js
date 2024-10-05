@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const mongoose = require('mongoose')
 
 if (process.argv.length<3) {
@@ -8,10 +10,12 @@ if (process.argv.length<3) {
     process.exit(1)
 }
 
-const password = process.argv[2]
+const password = process.env.MONGODB_PASSWORD
+const userName = process.env.MONGODB_USER
+const db = process.env.MONGODB_DB
 
 const url =
-  `mongodb+srv://selenegonzalez1c17:${password}@cluster0.bjpvt.mongodb.net/personApp?retryWrites=true&w=majority&appName=Cluster0`
+  `mongodb+srv://${userName}:${password}@cluster0.bjpvt.mongodb.net/${db}?retryWrites=true&w=majority&appName=Cluster0`
   
 mongoose.set('strictQuery',false)
 

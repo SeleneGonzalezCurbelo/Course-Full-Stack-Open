@@ -22,6 +22,7 @@ const App = () => {
         .then(response => {
           setPersons(response.data);
           setLoading(false);
+          console.log('Estado actualizado:', response.data);
         })
         .catch(error => {
           console.error('Error fetching persons:', error);
