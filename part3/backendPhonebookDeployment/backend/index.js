@@ -3,6 +3,21 @@ const express = require('express')
 const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
+const mongoose = require('mongoose')
+const password = process.argv[2]
+const url =
+  `mongodb+srv://selenegonzalez1c17:${password}@cluster0.bjpvt.mongodb.net/personApp?retryWrites=true&w=majority&appName=Cluster0`
+  
+mongoose.set('strictQuery',false)
+
+mongoose.connect(url)
+
+const personSchema = new mongoose.Schema({
+    name: String,
+    number: String,
+})
+
+const Person = mongoose.model('Persons', personSchema)
 
 app.use(express.json())
 app.use(cors())
@@ -13,6 +28,8 @@ morgan.token('body', (req) => {
 })
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+
+
 
 let persons = [
     { 
@@ -53,7 +70,10 @@ let persons = [
     })
 
     app.get('/api/persons', (request, response) => {
-        response.json(persons)
+        // response.json(persons)
+        Person.find({}).then(result => {
+            response.json(persons)
+          })
     })
 
     app.get('/info', (request, response) => {
@@ -76,7 +96,7 @@ let persons = [
 
     app.post('/api/persons', (request, response) => {
         const body = request.body        
-
+r
         if (!body.name || !body.number) {
             return response.status(400).json({ 
                 error: 'Name or number is missing' 
