@@ -57,7 +57,7 @@ const App = () => {
     setIsSuccess(success);
     setTimeout(() => {
       setAddPersonMessage(null);
-    }, 5000);
+    }, 10000);
   }
   
   const addNewName = (event) => {

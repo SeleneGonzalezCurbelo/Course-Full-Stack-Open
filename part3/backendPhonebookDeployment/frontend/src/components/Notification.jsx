@@ -1,4 +1,7 @@
 const Notification = ({ message, isSuccess  }) => {
+    console.log('Notification message:', message);
+    console.log('Notification success:', isSuccess);
+    
     if (message === null) {
       return null
     }
