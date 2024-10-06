@@ -77,6 +77,7 @@ const App = () => {
                 resetForm()
             })
             .catch(error => {
+                console.log(error.response);
                 displayNotification(`Error: ${error.response.data.error}`, false);
             });
     }
@@ -97,7 +98,6 @@ const App = () => {
       .catch(error => {
         console.error("Error updating person:", error);
         displayNotification(`Error updating ${newPerson.name}. It might have been removed from the server.`, false)
-        // setPersons(persons.filter(p => p.id !== id));
       });
     }
   }
