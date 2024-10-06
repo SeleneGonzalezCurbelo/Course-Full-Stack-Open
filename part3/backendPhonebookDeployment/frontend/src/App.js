@@ -62,21 +62,26 @@ const App = () => {
   
   const addNewName = (event) => {
     event.preventDefault() 
-    const newPerson = { name: newName, number: newNumber }
+    const newPerson = { name: newName, number: String(newNumber) } 
+
     const existingPerson = persons.find(person => person.name === newPerson.name);
 
     if (existingPerson) {
-      updatePerson(existingPerson.id, newPerson)
+        updatePerson(existingPerson.id, newPerson)
     } else {
-      personsService
-        .create(newPerson)
-        .then(response => {
-          setPersons(persons.concat(response.data));
-          displayNotification(`Added ${newPerson.name}`, true);
-          resetForm()
-      });
+        personsService
+            .create(newPerson)
+            .then(response => {
+                setPersons(persons.concat(response.data));
+                displayNotification(`Added ${newPerson.name}`, true);
+                resetForm()
+            })
+            .catch(error => {
+                displayNotification(`Error: ${error.response.data.error}`, false);
+            });
     }
-  }
+}
+
 
   const checkSameName = persons.some(person => person.name === newName);
 
@@ -92,7 +97,7 @@ const App = () => {
       .catch(error => {
         console.error("Error updating person:", error);
         displayNotification(`Error updating ${newPerson.name}. It might have been removed from the server.`, false)
-        setPersons(persons.filter(p => p.id !== id));
+        // setPersons(persons.filter(p => p.id !== id));
       });
     }
   }
@@ -113,7 +118,6 @@ const App = () => {
         }
       }); 
     }
-    
   }
 
   return (

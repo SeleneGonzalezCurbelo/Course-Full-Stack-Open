@@ -69,7 +69,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
         const id = request.params.id;
         const updatedPerson = request.body;
         
-        Person.findByIdAndUpdate(id, updatedPerson, { new: true, runValidators: true })
+        Person.findByIdAndUpdate(id, updatedPerson, { new: true, runValidators: true, context: 'query' })
             .then(updatedPerson => {
                 if (updatedPerson) {
                     response.json(updatedPerson);
@@ -83,32 +83,35 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 
     app.post('/api/persons', (request, response, next) => {
         const body = request.body;
-        if (body.name === undefined || body.number === undefined) {
-            return response.status(400).json({ error: 'Name or number is missing' })
+        
+        if (!body.name || !body.number) {
+            return response.status(400).json({ error: 'Name or number is missing' });
         }
-    
+        
         const person = new Person({
             name: body.name,
             number: body.number,
         });
-
+    
         person.save()
-            .then(savedPerson => {response.json(savedPerson)}) 
-            .catch(error => next(error))
+            .then(savedPerson => response.json(savedPerson))
+            .catch(error => next(error)); 
     });
+    
 
     const errorHandler = (error, request, response, next) => {
-        console.error(error.message)
-      
+        console.error(error.message);
+        
         if (error.name === 'CastError') {
-            return response.status(400).send({ error: 'Malformatted id' })
+            return response.status(400).send({ error: 'Malformatted id' });
         } else if (error.name === 'ValidationError') {
-            return response.status(400).json({ error: error.message })
+            console.log('Validation Error Details:', error); 
+            return response.status(400).json({ error: error.message });
         }
-      
-        next(error)
+    
+        next(error);
     }
-
+    
     app.use(errorHandler)
 
     const PORT = process.env.PORT
