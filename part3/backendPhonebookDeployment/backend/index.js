@@ -18,7 +18,9 @@ morgan.token('body', (req) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-    app.get('/api/persons/:id', (request, response) => {
+
+
+    app.get('/api/persons/:id', (request, response, next) => {
         const id = request.params.id; 
         Person.findById(id)
             .then(person => {
@@ -28,10 +30,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
                     response.status(404).send({ error: 'Person not found' });
                 }
             })
-            .catch(error => {
-                console.log(error)
-                response.status(500).end()
-            }) 
+            .catch(error => next(error)) 
     });
 
     app.get('/api/persons', (request, response) => {
@@ -52,7 +51,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
             });
     });
 
-    app.delete('/api/persons/:id', (request, response) => {
+    app.delete('/api/persons/:id', (request, response, next) => {
         const id = request.params.id;
     
         Person.findByIdAndDelete(id)
@@ -63,13 +62,26 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
                     response.status(404).send({ error: `Person with ID ${id} not found.` });
                 }
             })
-            .catch(error => {
-                console.error('Error deleting person:', error);
-                response.status(400).send({ error: `Malformatted ID: ${id}` });
-            });
+            .catch(error => next(error)) 
     });
 
-    app.post('/api/persons', (request, response) => {
+    app.put('/api/persons/:id', (request, response, next) => {
+        const id = request.params.id;
+        const updatedPerson = request.body;
+        
+        Person.findByIdAndUpdate(id, updatedPerson, { new: true, runValidators: true })
+            .then(updatedPerson => {
+                if (updatedPerson) {
+                    response.json(updatedPerson);
+                } else {
+                    response.status(404).send({ error: 'Person not found' });
+                }
+            })
+            .catch(error => next(error))
+    });
+
+
+    app.post('/api/persons', (request, response, next) => {
         const body = request.body;
         if (body.name === undefined || body.number === undefined) {
             return response.status(400).json({ error: 'Name or number is missing' })
@@ -80,10 +92,24 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
             number: body.number,
         });
 
-        person.save().then(savedPerson => {
-            response.json(savedPerson)
-        })
+        person.save()
+            .then(savedPerson => {response.json(savedPerson)}) 
+            .catch(error => next(error))
     });
+
+    const errorHandler = (error, request, response, next) => {
+        console.error(error.message)
+      
+        if (error.name === 'CastError') {
+            return response.status(400).send({ error: 'Malformatted id' })
+        } else if (error.name === 'ValidationError') {
+            return response.status(400).json({ error: error.message })
+        }
+      
+        next(error)
+    }
+
+    app.use(errorHandler)
 
     const PORT = process.env.PORT
     app.listen(PORT, () => {

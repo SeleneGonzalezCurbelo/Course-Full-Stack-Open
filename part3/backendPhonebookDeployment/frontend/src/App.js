@@ -22,10 +22,8 @@ const App = () => {
         .then(response => {
           setPersons(response.data);
           setLoading(false);
-          console.log('Estado actualizado:', response.data);
         })
         .catch(error => {
-          console.error('Error fetching persons:', error);
           setError('Error fetching persons');
           setLoading(false); 
         });
@@ -65,8 +63,10 @@ const App = () => {
   const addNewName = (event) => {
     event.preventDefault() 
     const newPerson = { name: newName, number: newNumber }
-    if (checkSameName) {
-      updatePerson(checkSameName.id, newPerson)
+    const existingPerson = persons.find(person => person.name === newPerson.name);
+
+    if (existingPerson) {
+      updatePerson(existingPerson.id, newPerson)
     } else {
       personsService
         .create(newPerson)
@@ -81,16 +81,16 @@ const App = () => {
   const checkSameName = persons.some(person => person.name === newName);
 
   const updatePerson = (id, newPerson) => {
-    const existingPerson = persons.find(person => person.name === newPerson.name);
     if(window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
       personsService
-        .update(existingPerson.id, newPerson)
+        .update(id, newPerson)
         .then(response => {
             displayNotification(`Modified phone number ${newPerson.name}`, true);
-            setPersons(persons.map(p => (p.id !== existingPerson.id ? p : response.data)));
+            setPersons(persons.map(p => (p.id !== id ? p : response.data)));
             resetForm()
       })
       .catch(error => {
+        console.error("Error updating person:", error);
         displayNotification(`Error updating ${newPerson.name}. It might have been removed from the server.`, false)
         setPersons(persons.filter(p => p.id !== id));
       });
@@ -99,8 +99,6 @@ const App = () => {
 
   const handleDeleteChange = (id) => {
     const person = persons.find(p => p.id === id)
-    console.log("holaaa")
-    console.log(person)
     if(window.confirm(`Delete ${person.name}?`)) {
       personsService
       .deletePerson(id)
