@@ -28,7 +28,10 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
                     response.status(404).send({ error: 'Person not found' });
                 }
             })
-            .catch(error => response.status(400).send({ error: 'malformatted id' })); // Manejo de errores
+            .catch(error => {
+                console.log(error)
+                response.status(500).end()
+            }) 
     });
 
     app.get('/api/persons', (request, response) => {
