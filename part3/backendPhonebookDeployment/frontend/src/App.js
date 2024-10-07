@@ -53,6 +53,9 @@ const App = () => {
   }
 
   const displayNotification = (message, success) => {
+    console.log(message)
+    console.log(success)
+
     setAddPersonMessage(message);
     setIsSuccess(success);
     setTimeout(() => {
@@ -123,7 +126,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      {addPersonMessage && <Notification message={addPersonMessage} isSuccess={isSuccess} />}
+      <Notification message={addPersonMessage} isSuccess={isSuccess} />
       <Filter filter={ filter } handleFilterChange={ handleFilterChange }/>
       <h2>Add a new</h2>
       <PersonForm 
