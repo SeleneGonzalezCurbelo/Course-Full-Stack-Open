@@ -124,18 +124,11 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
             console.log('Validation Error Details:', error); 
             return response.status(400).json({ error: error.message });
         }
-    
+        response.status(500).json({ error: 'Internal server error' });
         next(error);
     }
     
     app.use(errorHandler)
-    app.use((error, request, response, next) => {
-        console.error(error.message);
-        if (error.name === 'ValidationError') {
-            return response.status(400).json({ error: error.message });
-        }
-        next(error); 
-    });
     
     const PORT = process.env.PORT
     app.listen(PORT, () => {

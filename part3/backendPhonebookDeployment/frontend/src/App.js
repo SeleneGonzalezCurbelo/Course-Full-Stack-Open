@@ -74,14 +74,22 @@ const App = () => {
         personsService
             .create(newPerson)
             .then(response => {
-                setPersons(persons.concat(response.data));
-                displayNotification(`Added ${newPerson.name}`, true);
-                resetForm();
+              setPersons(persons.concat(response.data));
+              displayNotification(`Added ${newPerson.name}`, true);
+              resetForm();
             })
             .catch(error => {
-                console.error("Error response:", error.response);
-                console.log('Mensaje de error:', error.response.data.error); 
-                displayNotification(`Error: ${error.response.data.error}`, false);            });
+              if (error.response) {
+                console.error("Error en la respuesta:", error.response.data.error);
+                displayNotification(`Error: ${error.response.data.error}`, false);
+              } else if (error.request) {
+                console.error("No hubo respuesta del servidor:", error.request);
+                displayNotification('No response from server. Please try again later.', false);
+              } else {
+                console.error("Error en la solicitud:", error.message);
+                displayNotification(`Error: ${error.message}`, false);
+              }
+            });
     }
   };
 
