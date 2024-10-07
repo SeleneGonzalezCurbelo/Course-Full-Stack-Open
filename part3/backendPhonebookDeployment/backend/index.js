@@ -16,8 +16,6 @@ morgan.token('body', (req) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-
-
     app.get('/api/persons/:id', (request, response, next) => {
         const id = request.params.id; 
         Person.findById(id)
