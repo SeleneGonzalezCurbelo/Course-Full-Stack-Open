@@ -80,14 +80,13 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
             .catch(error => next(error))
     });
 
-
     app.post('/api/persons', (request, response, next) => {
         const body = request.body;
-        
+    
         if (!body.name || !body.number) {
             return response.status(400).json({ error: 'Name or number is missing' });
         }
-        
+    
         const person = new Person({
             name: body.name,
             number: body.number,
@@ -95,10 +94,12 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
     
         person.save()
             .then(savedPerson => response.json(savedPerson))
-            .catch(error => next(error)); 
+            .catch(error => {
+                console.error("Validation error:", error);
+                next(error);  
+            });
     });
     
-
     const errorHandler = (error, request, response, next) => {
         console.error(error.message);
         
@@ -113,7 +114,14 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
     }
     
     app.use(errorHandler)
-
+    app.use((error, request, response, next) => {
+        console.error(error.message);
+        if (error.name === 'ValidationError') {
+            return response.status(400).json({ error: error.message });
+        }
+        next(error); 
+    });
+    
     const PORT = process.env.PORT
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`)

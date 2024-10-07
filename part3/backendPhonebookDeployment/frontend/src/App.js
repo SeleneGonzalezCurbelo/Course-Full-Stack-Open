@@ -53,8 +53,7 @@ const App = () => {
   }
 
   const displayNotification = (message, success) => {
-    console.log(message)
-    console.log(success)
+    console.log('Displaying notification:', message, success);
 
     setAddPersonMessage(message);
     setIsSuccess(success);
@@ -64,27 +63,29 @@ const App = () => {
   }
   
   const addNewName = (event) => {
-    event.preventDefault() 
-    const newPerson = { name: newName, number: String(newNumber) } 
+    event.preventDefault();
+    const newPerson = { name: newName, number: String(newNumber) };
 
     const existingPerson = persons.find(person => person.name === newPerson.name);
 
     if (existingPerson) {
-        updatePerson(existingPerson.id, newPerson)
+        updatePerson(existingPerson.id, newPerson);
     } else {
         personsService
             .create(newPerson)
             .then(response => {
                 setPersons(persons.concat(response.data));
                 displayNotification(`Added ${newPerson.name}`, true);
-                resetForm()
+                resetForm();
             })
             .catch(error => {
-                console.log(error.response);
-                displayNotification(`Error: ${error.response.data.error}`, false);
+                console.error("Error response:", error.response);
+                const errorMessage = error.response?.data?.error || 'An unknown error occurred';
+                displayNotification(`Error: ${errorMessage}`, false);
             });
     }
-}
+  };
+
 
 
   const checkSameName = persons.some(person => person.name === newName);
