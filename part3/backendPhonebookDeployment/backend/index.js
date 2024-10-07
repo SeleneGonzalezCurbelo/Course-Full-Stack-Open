@@ -89,12 +89,13 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
     });
 
     app.post('/api/persons', (request, response, next) => {
-        const body = request.body;
+        console.log("Incoming POST request body:", request.body); 
     
+        const body = request.body;
         if (!body.name || !body.number) {
             return response.status(400).json({ error: 'Name or number is missing' });
         }
-    
+        
         const person = new Person({
             name: body.name,
             number: body.number,
@@ -110,6 +111,8 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
                 next(error);
             });
     });
+    
+
     
     const errorHandler = (error, request, response, next) => {
         console.error(error.message);
