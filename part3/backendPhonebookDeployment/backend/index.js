@@ -66,6 +66,13 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
     });
 
     app.put('/api/persons/:id', (request, response, next) => {
+
+        const { name, number } = request.body;
+
+        if (!name || !number) {
+            return response.status(400).json({ error: 'Name or number is missing' });
+        }
+
         const id = request.params.id;
         const updatedPerson = request.body;
         
@@ -77,7 +84,12 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
                     response.status(404).send({ error: 'Person not found' });
                 }
             })
-            .catch(error => next(error))
+            .catch(error => {
+                if (error.name === 'ValidationError') {
+                    return response.status(400).json({ error: error.message });
+                }
+                next(error);
+            });
     });
 
     app.post('/api/persons', (request, response, next) => {
@@ -95,8 +107,10 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
         person.save()
             .then(savedPerson => response.json(savedPerson))
             .catch(error => {
-                console.error("Validation error:", error);
-                next(error);  
+                if (error.name === 'ValidationError') {
+                    return response.status(400).json({ error: error.message });
+                }
+                next(error);
             });
     });
     
