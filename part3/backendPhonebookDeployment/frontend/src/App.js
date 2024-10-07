@@ -107,8 +107,13 @@ const App = () => {
             resetForm()
       })
       .catch(error => {
-        console.error("Error updating person:", error);
-        displayNotification(`Error updating ${newPerson.name}. It might have been removed from the server.`, false)
+        if (error.response && error.response.data && error.response.data.error) {
+          console.error("Validation error during update:", error.response.data.error);
+          displayNotification(`Validation error: ${error.response.data.error}`, false);
+        } else {
+          console.error("Error updating person:", error);
+          displayNotification(`Error updating ${newPerson.name}. It might have been removed from the server.`, false);
+        }
       });
     }
   }
