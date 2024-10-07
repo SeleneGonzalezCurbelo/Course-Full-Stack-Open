@@ -107,6 +107,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
         person.save()
             .then(savedPerson => response.json(savedPerson))
             .catch(error => {
+                console.error('Error during saving person:', error); 
                 if (error.name === 'ValidationError') {
                     return response.status(400).json({ error: error.message });
                 }

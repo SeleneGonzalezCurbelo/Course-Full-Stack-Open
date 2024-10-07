@@ -80,9 +80,8 @@ const App = () => {
             })
             .catch(error => {
                 console.error("Error response:", error.response);
-                const errorMessage = error.response?.data?.error || 'An unknown error occurred';
-                displayNotification(`Error: ${errorMessage}`, false);
-            });
+                console.log('Mensaje de error:', error.response.data.error); 
+                displayNotification(`Error: ${error.response.data.error}`, false);            });
     }
   };
 
