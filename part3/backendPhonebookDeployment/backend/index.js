@@ -8,8 +8,6 @@ const cors = require('cors')
 const Person = require('./models/person')
 
 app.use(express.json())
-app.use(cors({origin: 'http://localhost:3000',}))
-
 app.use(express.static('build'));
 
 morgan.token('body', (req) => {
