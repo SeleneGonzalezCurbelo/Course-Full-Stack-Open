@@ -36,7 +36,18 @@ Follow these steps to set up and run the project:
 4. **Install Project Dependencies: Make sure you have Node.js and npm installed. Then, run:**
     ```bash
     npm install
-5. **Start the Application:** Run the following command to start the development server:
+5. **Start the Backend:** To start the backend server in development mode, run:
+    ```bash
+    npm run dev    
+The backend will be running on port 3001.
+
+6. **Start the Frontend:** You can start it with::
     ```bash
     npm run start
-6. **Access the Application:** The app will be running on http://localhost:3000.
+The frontend will be available on port 3000.
+
+7. **Access the Application:** Access the Application: Once both servers are running, you can access the frontend at: http://localhost:3000. The backend will be available at: http://localhost:3001.
+
+## Next Project 
+
+ - Proceed to Part 4: [Testing Express servers, user administration](../part4/)
