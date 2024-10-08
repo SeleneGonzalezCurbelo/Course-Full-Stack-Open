@@ -8,6 +8,7 @@ This project consists of a contact management application where users can create
 - [About This Repository](#about-this-repository)
 - [How to Run the Projects](#how-to-run-the-projects)
   - [Install](#install)
+- [Data Validations](#data-validations)
 - [Access the Application](#access-the-application)
 
 ## About This Repository
@@ -35,6 +36,20 @@ This project consists of a contact management application where users can create
 <div style="background-color: #ffffff; border-left: 6px solid #2196F3; padding: 10px; color: #000000; margin: 20px 0;">
   <strong>Note:</strong> Make sure you have Node.js and npm installed before continuing.
 </div>
+
+## Data Validations
+
+- **Name:**
+  - It must be at least 3 characters long.
+- **Phone number:** 
+  - Must be 8 or more characters.
+  - It must be in the format XX-XXXXXXXX or XXX-XXXXXXXX, where:
+    - The first part is 2 or 3 digits long.
+    - The second part is just numbers.
+    - Valid Examples:
+      - 09-1234556
+      - 040-22334455
+
 
 ## Access the Application
 
