@@ -20,6 +20,8 @@ const personSchema = new mongoose.Schema({
     type: String,
     minLength: 3,
     required: true,
+    unique: true,
+    minlength: 3,
     message: props => `${props.value} is not a valid name number`
   },
   number: {
