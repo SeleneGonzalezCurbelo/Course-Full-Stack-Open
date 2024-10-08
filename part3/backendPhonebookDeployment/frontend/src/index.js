@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios'
-const promise = axios.get('https://course-full-stack-open.onrender.com/api/persons')
+const promise = axios.get('http://localhost:3000/api/persons')
 
 promise.then(response => {
   ReactDOM.createRoot(document.getElementById('root')).render(<App />)
