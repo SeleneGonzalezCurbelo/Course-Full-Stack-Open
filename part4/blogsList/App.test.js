@@ -117,3 +117,54 @@ describe('favorite blog', () => {
     });
   });
 });
+
+describe('most blogs', () => {
+  const blogs = [
+    {
+      _id: '1',
+      title: 'Blog 1',
+      author: 'Author 1',
+      url: 'http://example1.com',
+      likes: 10,
+      __v: 0
+    },
+    {
+      _id: '2',
+      title: 'Blog 2',
+      author: 'Author 2',
+      url: 'http://example2.com',
+      likes: 20,
+      __v: 0
+    },
+    {
+      _id: '3',
+      title: 'Canonical string reduction',
+      author: 'Author 2',
+      url: 'http://example3.com',
+      likes: 12,
+      __v: 0
+    }
+  ];
+
+  test('author with most blogs', () => {
+    const result = listHelper.mostBlogs(blogs);
+    assert.deepStrictEqual(result, {
+      author: 'Author 2',
+      blogs: 2
+    });
+  });
+
+  test('when list is empty, return null', () => {
+    const result = listHelper.mostBlogs([]);
+    assert.strictEqual(result, null);
+  });
+
+  test('when list has one blog, return that author with one blog', () => {
+    const oneBlogList = [blogs[0]];
+    const result = listHelper.mostBlogs(oneBlogList);
+    assert.deepStrictEqual(result, {
+      author: 'Author 1',
+      blogs: 1
+    });
+  });
+});
