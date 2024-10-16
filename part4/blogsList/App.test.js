@@ -64,3 +64,56 @@ describe('total likes', () => {
     assert.strictEqual(result, 0);
   });
 })
+
+describe('favorite blog', () => {
+  const blogs = [
+    {
+      _id: '1',
+      title: 'Blog 1',
+      author: 'Author 1',
+      url: 'http://example1.com',
+      likes: 10,
+      __v: 0
+    },
+    {
+      _id: '2',
+      title: 'Blog 2',
+      author: 'Author 2',
+      url: 'http://example2.com',
+      likes: 20,
+      __v: 0
+    },
+    {
+      _id: '3',
+      title: 'Canonical string reduction',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://example3.com',
+      likes: 12,
+      __v: 0
+    }
+  ];
+
+  test('when list has multiple blogs, return the one with the most likes', () => {
+    const result = listHelper.favoriteBlog(blogs);
+    assert.deepStrictEqual(result, {
+      title: 'Blog 2',
+      author: 'Author 2',
+      likes: 20
+    });
+  });
+
+  test('when list is empty, return null', () => {
+    const result = listHelper.favoriteBlog([]);
+    assert.strictEqual(result, null);
+  });
+
+  test('when list has one blog, return that blog in the correct format', () => {
+    const oneBlogList = [blogs[0]];
+    const result = listHelper.favoriteBlog(oneBlogList);
+    assert.deepStrictEqual(result, {
+      title: 'Blog 1',
+      author: 'Author 1',
+      likes: 10
+    });
+  });
+});
