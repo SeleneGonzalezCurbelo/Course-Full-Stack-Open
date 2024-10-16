@@ -1,8 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+const { test, describe } = require('node:test'); 
+const assert = require('node:assert'); 
+const listHelper = require('./utils/list_helper'); 
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe('Dummy function tests', () => {
+  test('dummy returns one', () => {
+    const blogs = [];
+    const result = listHelper.dummy(blogs);
+    assert.strictEqual(result, 1);
+  });
 });
