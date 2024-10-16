@@ -10,42 +10,42 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNumber] = useState('')
   const [filter, setFilter] = useState('')
-  const [addPersonMessage, setAddPersonMessage] = useState(null);
+  const [addPersonMessage, setAddPersonMessage] = useState(null)
   const [isSuccess, setIsSuccess] = useState(true)
 
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     personsService
         .getAll()
         .then(response => {
-          setPersons(response.data);
-          setLoading(false);
+          setPersons(response.data)
+          setLoading(false)
         })
         .catch(error => {
-          setError('Error fetching persons');
-          setLoading(false); 
-        });
-  }, []);
+          setError('Error fetching persons')
+          setLoading(false) 
+        })
+  }, [])
   
   console.log('render', persons.length, 'persons')
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div> 
   }
 
   if (error) {
-    return <div>{error}</div>; 
+    return <div>{error}</div> 
   }
 
-  const handleNameChange = (event) => setNewName(event.target.value);
-  const handleNumberChange = (event) => setNumber(event.target.value);
-  const handleFilterChange = (event) => setFilter(event.target.value);
+  const handleNameChange = (event) => setNewName(event.target.value)
+  const handleNumberChange = (event) => setNumber(event.target.value)
+  const handleFilterChange = (event) => setFilter(event.target.value)
   
   const personsToShow = persons.filter(person => 
     person.name && person.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  )
   
   const resetForm = () => {
     setNewName('')
@@ -53,68 +53,64 @@ const App = () => {
   }
 
   const displayNotification = (message, success) => {
-    console.log('Displaying notification:', message, success);
+    console.log('Displaying notification:', message, success)
 
-    setAddPersonMessage(message);
-    setIsSuccess(success);
+    setAddPersonMessage(message)
+    setIsSuccess(success)
     setTimeout(() => {
-      setAddPersonMessage(null);
-    }, 10000);
+      setAddPersonMessage(null)
+    }, 10000)
   }
   
   const addNewName = (event) => {
-    event.preventDefault();
-    const newPerson = { name: newName, number: String(newNumber) };
+    event.preventDefault()
+    const newPerson = { name: newName, number: String(newNumber) }
 
-    const existingPerson = persons.find(person => person.name === newPerson.name);
+    const existingPerson = persons.find(person => person.name === newPerson.name)
 
     if (existingPerson) {
-        updatePerson(existingPerson.id, newPerson);
+        updatePerson(existingPerson.id, newPerson)
     } else {
         personsService
             .create(newPerson)
             .then(response => {
-              setPersons(persons.concat(response.data));
-              displayNotification(`Added ${newPerson.name}`, true);
-              resetForm();
+              setPersons(persons.concat(response.data))
+              displayNotification(`Added ${newPerson.name}`, true)
+              resetForm()
             })
             .catch(error => {
               if (error.response) {
-                console.error("Error en la respuesta:", error.response.data.error);
-                displayNotification(`Error: ${error.response.data.error}`, false);
+                console.error('Error en la respuesta:', error.response.data.error)
+                displayNotification(`Error: ${error.response.data.error}`, false)
               } else if (error.request) {
-                console.error("No hubo respuesta del servidor:", error.request);
-                displayNotification('No response from server. Please try again later.', false);
+                console.error('No hubo respuesta del servidor:', error.request)
+                displayNotification('No response from server. Please try again later.', false)
               } else {
-                console.error("Error en la solicitud:", error.message);
-                displayNotification(`Error: ${error.message}`, false);
+                console.error('Error en la solicitud:', error.message)
+                displayNotification(`Error: ${error.message}`, false)
               }
-            });
+            })
     }
-  };
-
-
-
-  const checkSameName = persons.some(person => person.name === newName);
+  }
 
   const updatePerson = (id, newPerson) => {
     if(window.confirm(`${newPerson.name} is already added to phonebook, replace the old number with a new one?`)) {
       personsService
         .update(id, newPerson)
         .then(response => {
-            displayNotification(`Modified phone number ${newPerson.name}`, true);
-            setPersons(persons.map(p => (p.id !== id ? p : response.data)));
+            displayNotification(`Modified phone number ${newPerson.name}`, true)
+            setPersons(persons.map(p => (p.id !== id ? p : response.data)))
             resetForm()
       })
       .catch(error => {
         if (error.response && error.response.data && error.response.data.error) {
-          console.error("Validation error during update:", error.response.data.error);
-          displayNotification(`Validation error: ${error.response.data.error}`, false);
+          console.error('Validation error during update:', error.response.data.error)
+          displayNotification(`Validation error: ${error.response.data.error}`, false)
         } else {
-          console.error("Error updating person:", error);
-          displayNotification(`Error updating ${newPerson.name}. It might have been removed from the server.`, false);
+          console.error('Error updating person:', error)
+          displayNotification(`Error updating ${newPerson.name}. It might have been removed from the server.`, false)
         }
-      });
+      })
     }
   }
 
@@ -124,15 +120,15 @@ const App = () => {
       personsService
       .deletePerson(id)
       .then(() => {
-        setPersons(persons.filter(p => p.id !== id));
-        displayNotification(`Deleted ${person.name}`, true);
+        setPersons(persons.filter(p => p.id !== id))
+        displayNotification(`Deleted ${person.name}`, true)
       })
       .catch(error => {
         if (error.response && error.response.status === 404) {
           displayNotification(`Information of ${person.name} has already been removed from server`, false)
-          setPersons(persons.filter(p => p.id !== id));
+          setPersons(persons.filter(p => p.id !== id))
         }
-      }); 
+      }) 
     }
   }
 

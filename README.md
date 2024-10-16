@@ -25,6 +25,9 @@ The course is divided into parts, each focusing on a key area of full-stack web 
 3. [Programming a server with NodeJS and Express](./part3) 
     - Backend application using Node.js and Express, and handling HTTP requests.
 
+4. [Testing Express servers, user administration](./part4/)
+    - Unit and integration tests for the backend. Additionally, user authentication and authorization.
+
 Each folder includes exercises and projects on the concepts learned in the course.
 
 ## Course Overview
