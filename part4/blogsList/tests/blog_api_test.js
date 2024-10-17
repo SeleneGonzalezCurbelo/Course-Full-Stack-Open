@@ -64,6 +64,20 @@ describe('POST  /api/blogs', () => {
 
     assert.strictEqual(response.body.likes, 0); 
   })
+
+  test('fails with status code 400 if title or url are missing', async () => {
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlogMissingTitle)
+      .expect(400)  
+      .expect('Content-Type', /application\/json/)
+
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlogMissingUrl)
+      .expect(400)  
+      .expect('Content-Type', /application\/json/);
+  })
 })
 
   after(async () => {

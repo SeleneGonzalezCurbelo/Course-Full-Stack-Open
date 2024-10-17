@@ -30,13 +30,16 @@ blogsRouter.post('/', (request, response, next) => {
   })
 
   blog.save()
-    .then(savedblog => {
-      response.status(201).json(savedblog)
-    })
-    .catch(error => {
-      console.error('Error al guardar el blog:', error)
+  .then(savedBlog => {
+    response.status(201).json(savedBlog)
+  })
+  .catch(error => {
+    if (error.name === 'ValidationError') {
+      response.status(400).json({ error: error.message })
+    } else {
       next(error)
-    })
+    }
+  })
 })
 
 blogsRouter.delete('/:id', (request, response, next) => {
