@@ -1,14 +1,11 @@
 const blogsRouter = require('express').Router()
-const Blog = require('../models/blog') 
+const Blog = require('../models/blog')
 
-blogsRouter.get('/', async (request, response, next) => {
-  try {
-    const blogs = await Blog.find({});
-    response.json(blogs);
-  } catch (error) {
-    next(error);
-  }
-});
+blogsRouter.get('/', (request, response) => {
+    Blog.find({}).then(blogs => {
+    response.json(blogs)
+  })
+})
 
 blogsRouter.get('/:id', (request, response, next) => {
     Blog.findById(request.params.id)
@@ -29,14 +26,17 @@ blogsRouter.post('/', (request, response, next) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes,
+    likes: body.likes || 0,
   })
 
   blog.save()
     .then(savedblog => {
-      response.json(savedblog)
+      response.status(201).json(savedblog)
     })
-    .catch(error => next(error))
+    .catch(error => {
+      console.error('Error al guardar el blog:', error)
+      next(error)
+    })
 })
 
 blogsRouter.delete('/:id', (request, response, next) => {
