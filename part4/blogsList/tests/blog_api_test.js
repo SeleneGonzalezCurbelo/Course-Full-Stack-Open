@@ -27,7 +27,18 @@ describe('when there is initially some blogs saved', () => {
     const response = await api.get('/api/blogs')
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
   })
+
+  test('check that posts have the id property instead of _id', async () => {
+    const response = await api.get('/api/blogs')
+    const blogs = response.body
+
+    blogs.forEach(blog => {
+      assert.ok(blog.id)
+      assert.strictEqual(blog._id, undefined)
+    })
+  })
 })
+
 
 after(async () => {
   await mongoose.connection.close()
