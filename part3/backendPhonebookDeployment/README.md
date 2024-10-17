@@ -7,7 +7,6 @@ This project consists of a contact management application where users can create
 - [Backend Phonebook Deployment](#backend-phonebook-deployment)
 - [About This Repository](#about-this-repository)
 - [How to Run the Projects](#how-to-run-the-projects)
-  - [Install](#install)
 - [Data Validations](#data-validations)
 - [Access the Application](#access-the-application)
 
@@ -23,16 +22,6 @@ This project consists of a contact management application where users can create
 - **Local:** To run the Phonebook application, please follow the instructions in the [Part 3 README](../README.md#how-to-run-the-projects).
 - **Online:** If you prefer to use the version deployed in Render, access the frontend go to [Access the Application](#access-the-application)
 
-### Install
-- Make sure to install the required packages by running the following commands in the project directory:
-  ```bash
-  npm install express
-  npm install --save-dev nodemon
-  npm install morgan
-  npm install axios
-  npm install mongoose
-  npm install dotenv
-  npm install eslint --save-dev
 <div style="background-color: #ffffff; border-left: 6px solid #2196F3; padding: 10px; color: #000000; margin: 20px 0;">
   <strong>Note:</strong> Make sure you have Node.js and npm installed before continuing.
 </div>

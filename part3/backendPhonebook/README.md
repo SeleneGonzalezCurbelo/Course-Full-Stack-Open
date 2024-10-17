@@ -6,7 +6,6 @@
 - [About This Repository](#about-this-repository)
 - [Routes and Features](#routes-and-features)
 - [How to Run the Projects](#how-to-run-the-projects)
-  - [Install](#install)
 
 ## About This Repository
 
@@ -36,12 +35,6 @@ This repository contains a simple backend application implemented in Node.js usi
 
 To run the Anecdotes application, please follow the instructions in the [Part 3 README](../README.md#how-to-run-the-projects).
 
-### Install
-- Make sure to install by running the following command in the project directory:
-  ```bash
-  npm install express
-  npm install --save-dev nodemon
-  npm install morgan
 <div style="background-color: #ffffff; border-left: 6px solid #2196F3; padding: 10px; color: #000000; margin: 20px 0;">
   <strong>Note:</strong> Use Postman or any REST client to test routes.
 </div>
