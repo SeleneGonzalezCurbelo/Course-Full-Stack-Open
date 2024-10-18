@@ -114,6 +114,49 @@ describe('DELETE /api/blogs/:id', () => {
   })
 })
 
+describe('PUT /api/blogs/:id', () => {
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+    await Blog.insertMany(helper.initialBlogs)
+  })
+
+  test('updates the likes of a blog', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const newLikes = Math.floor(Math.random() * 20)
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: newLikes }) 
+      .expect(200) 
+      .expect('Content-Type', /application\/json/)
+
+    const updatedBlog = await Blog.findById(blogToUpdate.id)
+    assert.strictEqual(updatedBlog.likes, newLikes) 
+  })
+
+
+  test('responds with 404 if the blog does not exist', async () => {
+    const nonExistingId = await helper.nonExistingId() 
+
+    await api
+      .put(`/api/blogs/${nonExistingId}`)
+      .send({ likes: Math.floor(Math.random() * 20) }) 
+      .expect(404)
+  })
+
+  test('responds with 400 if invalid data is provided', async () => {
+    const blogsAtStart = await helper.blogsInDb();
+    const blogToUpdate = blogsAtStart[0];
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: 'notANumber' }) // Intentar enviar un valor no válido
+      .expect(400);
+  });
+})
+
   after(async () => {
     await mongoose.connection.close()
   })
