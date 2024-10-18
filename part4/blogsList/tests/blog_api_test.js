@@ -37,6 +37,42 @@ describe('GET /api/blogs', () => {
   })
 })
 
+describe('GET /api/blogs/:id', () => {
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+    await Blog.insertMany(helper.initialBlogs)
+  })
+
+  test('returns a blog with a valid id', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToView = blogsAtStart[0]
+
+    const response = await api
+      .get(`/api/blogs/${blogToView.id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    assert.strictEqual(response.body.id, blogToView.id)
+    assert.strictEqual(response.body.title, blogToView.title)
+  })
+
+  test('responds with 404 if the blog does not exist', async () => {
+    const nonExistingId = await helper.nonExistingId()
+
+    await api
+      .get(`/api/blogs/${nonExistingId}`)
+      .expect(404)
+  })
+
+  test('responds with 400 if the id is invalid', async () => {
+    const invalidId = 'invalidId123'
+
+    await api
+      .get(`/api/blogs/${invalidId}`)
+      .expect(400)
+  })
+})
+
 describe('POST  /api/blogs', () => {
   beforeEach(async () => {
     await Blog.deleteMany({})
@@ -147,14 +183,19 @@ describe('PUT /api/blogs/:id', () => {
   })
 
   test('responds with 400 if invalid data is provided', async () => {
-    const blogsAtStart = await helper.blogsInDb();
-    const blogToUpdate = blogsAtStart[0];
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
 
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
-      .send({ likes: 'notANumber' }) // Intentar enviar un valor no válido
-      .expect(400);
-  });
+      .send({ likes: 'notANumber' }) 
+      .expect(400)
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: -5 }) 
+      .expect(400)
+  })
 })
 
   after(async () => {
