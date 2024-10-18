@@ -42,6 +42,30 @@ const newBlogMissingUrl = {
   likes: 0
 }
 
+const newUser = {
+  username: 'mluukkai',
+  name: 'Matti Luukkainen',
+  password: 'salainen',
+}
+
+const newUserNull = {
+  username: null,
+  name: 'Matti Luukkainen',
+  password: 'salainen',
+}
+
+const newUserNotLong = {
+  username: 'a',
+  name: 'Matti Luukkainen',
+  password: 'salainen',
+}
+
+const newUserWithShortPassword = {
+  username: 'validUser',
+  name: 'Valid User',
+  password: 'pw'
+}
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map(blog => blog.toJSON())
@@ -57,7 +81,6 @@ const nonExistingId = async () => {
   return id
 }
 
-
 module.exports = {
     initialBlogs,
     newBlog,
@@ -66,5 +89,9 @@ module.exports = {
     newBlogMissingUrl,
     blogsInDb,
     nonExistingId,
-    usersInDb
+    usersInDb,
+    newUser,
+    newUserNull,
+    newUserNotLong,
+    newUserWithShortPassword
 }

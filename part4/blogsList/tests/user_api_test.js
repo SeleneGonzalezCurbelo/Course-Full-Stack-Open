@@ -8,7 +8,7 @@ const app = require('../app')
 const api = supertest(app)
 const assert = require('assert')
 
-describe('when there is initially one user in db', () => {
+describe('POST /api/users', () => {
     beforeEach(async () => {
       await User.deleteMany({})
   
@@ -21,15 +21,9 @@ describe('when there is initially one user in db', () => {
     test('creation succeeds with a fresh username', async () => {
       const usersAtStart = await helper.usersInDb()
   
-      const newUser = {
-        username: 'mluukkai',
-        name: 'Matti Luukkainen',
-        password: 'salainen',
-      }
-  
       await api
         .post('/api/users')
-        .send(newUser)
+        .send(helper.newUser)
         .expect(201)
         .expect('Content-Type', /application\/json/)
   
@@ -37,7 +31,30 @@ describe('when there is initially one user in db', () => {
       assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
   
       const usernames = usersAtEnd.map(u => u.username)
-      assert(usernames.includes(newUser.username))
+      assert(usernames.includes(helper.newUser.username))
+    })
+
+    test('fails with status code 400 if username is missing', async () => {
+      await api
+        .post('/api/users')
+        .send(helper.newUserNull)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+    })
+
+    test('fails with status code 400 if username is too short', async () => {
+      await api
+        .post('/api/users')
+        .send(helper.newUserTooShort )
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+    })
+
+    test('fails with status code 400 if password is too short', async () => {
+      await api
+        .post('/api/users')
+        .send(helper.newUserWithShortPassword)
+        .expect(400)
     })
 })
 
