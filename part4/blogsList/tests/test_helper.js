@@ -1,5 +1,6 @@
 const Blog = require('../models/blog')
 const mongoose = require('mongoose')
+const User = require('../models/user') 
 
 const initialBlogs = [
     {
@@ -36,21 +37,26 @@ const newBlogMissingTitle = {
 }
 
 const newBlogMissingUrl = {
-    title: 'Blog without URL',
-    author: 'Author without URL',
-    likes: 0
+  title: 'Blog without URL',
+  author: 'Author without URL',
+  likes: 0
 }
 
 const blogsInDb = async () => {
-    const blogs = await Blog.find({})
-    return blogs.map(blog => blog.toJSON())
-  }
-  
-  const nonExistingId = async () => {
-    const id = new mongoose.Types.ObjectId().toString();
-    return id
-  };
-  
+  const blogs = await Blog.find({})
+  return blogs.map(blog => blog.toJSON())
+}
+
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(u => u.toJSON())
+}
+
+const nonExistingId = async () => {
+  const id = new mongoose.Types.ObjectId().toString();
+  return id
+}
+
 
 module.exports = {
     initialBlogs,
@@ -59,5 +65,6 @@ module.exports = {
     newBlogMissingTitle,
     newBlogMissingUrl,
     blogsInDb,
-    nonExistingId
+    nonExistingId,
+    usersInDb
 }
