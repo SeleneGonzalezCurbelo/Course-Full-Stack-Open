@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+// models/blog.js
+const mongoose = require('mongoose');
 
 const blogSchema = new mongoose.Schema({
   url: {
@@ -13,7 +14,7 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  user: {
+  user: { // Cambiar de array a un solo usuario
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true, 
@@ -23,14 +24,14 @@ const blogSchema = new mongoose.Schema({
     default: 0,
     min: 0,
   },
-})
+});
 
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
   }
-})
+});
 
-module.exports = mongoose.model('Blog', blogSchema)
+module.exports = mongoose.model('Blog', blogSchema);

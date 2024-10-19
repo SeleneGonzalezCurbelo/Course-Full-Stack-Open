@@ -4,12 +4,12 @@ const User = require('../models/user')
 
 blogsRouter.get('/', async (request, response, next) => {
   try {
-    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
-    response.json(blogs)
+    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
+    response.json(blogs);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 
 blogsRouter.get('/:id', async (request, response, next) => {
@@ -30,7 +30,6 @@ blogsRouter.get('/:id', async (request, response, next) => {
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
   const users = await User.find({})
-  const user = users[0]
 
   try {
     const users = await User.find({})
