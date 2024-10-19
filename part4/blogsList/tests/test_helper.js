@@ -54,7 +54,7 @@ const newUserNull = {
   password: 'salainen',
 }
 
-const newUserNotLong = {
+const newUserTooShort  = {
   username: 'a',
   name: 'Matti Luukkainen',
   password: 'salainen',
@@ -92,6 +92,6 @@ module.exports = {
     usersInDb,
     newUser,
     newUserNull,
-    newUserNotLong,
+    newUserTooShort,
     newUserWithShortPassword
 }
