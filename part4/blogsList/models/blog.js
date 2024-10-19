@@ -1,4 +1,3 @@
-// models/blog.js
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
@@ -14,7 +13,7 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  user: { // Cambiar de array a un solo usuario
+  user: { 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true, 
