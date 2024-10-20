@@ -1,11 +1,13 @@
 const { test, after, beforeEach, describe } = require('node:test')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
+const bcrypt = require('bcryptjs')
 const helper = require('./test_helper')
 const Blog = require('../models/blog') 
+const User = require('../models/user') 
 const assert = require('assert')
 
-const app = require('../app')
+const app = require('../App.js') 
 
 const api = supertest(app)
 
@@ -74,14 +76,29 @@ describe('GET /api/blogs/:id', () => {
 })
 
 describe('POST  /api/blogs', () => {
+  let token
+
   beforeEach(async () => {
+    await User.deleteMany({})
     await Blog.deleteMany({})
-    await Blog.insertMany(helper.initialBlogs)
+
+    const passwordHash = await bcrypt.hash('password', 10)
+    const user = new User({ username: 'testuser', passwordHash })
+    await user.save()
+
+    const loginResponse = await api
+      .post('/api/login')
+      .send({ username: 'testuser', password: 'password' })
+
+    token = loginResponse.body.token 
+
+    await Blog.insertMany(helper.initialBlogs.map(blog => ({ ...blog, user: user._id })))
   })
 
   test('a valid blog can be added', async () => {
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(helper.newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -94,6 +111,7 @@ describe('POST  /api/blogs', () => {
   test('a valid blog without likes defaults likes to 0', async () => {
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(helper.newBlogWithoutLikes)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -104,12 +122,14 @@ describe('POST  /api/blogs', () => {
   test('fails with status code 400 if title or url are missing', async () => {
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(helper.newBlogMissingTitle)
       .expect(400)  
       .expect('Content-Type', /application\/json/)
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
       .send(helper.newBlogMissingUrl)
       .expect(400)  
       .expect('Content-Type', /application\/json/)
@@ -171,7 +191,6 @@ describe('PUT /api/blogs/:id', () => {
     const updatedBlog = await Blog.findById(blogToUpdate.id)
     assert.strictEqual(updatedBlog.likes, newLikes) 
   })
-
 
   test('responds with 404 if the blog does not exist', async () => {
     const nonExistingId = await helper.nonExistingId() 

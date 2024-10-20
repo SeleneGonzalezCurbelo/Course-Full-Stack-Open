@@ -4,7 +4,7 @@ const supertest = require('supertest')
 const bcrypt = require('bcryptjs')
 const helper = require('./test_helper')
 const User = require('../models/user') 
-const app = require('../app') 
+const app = require('../App.js') 
 const api = supertest(app)
 const assert = require('assert')
 

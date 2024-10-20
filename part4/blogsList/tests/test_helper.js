@@ -7,13 +7,15 @@ const initialBlogs = [
       title: "Blog 1",
       author: "John Doe",
       url: "http://example.com/first",
-      likes: 3
+      likes: 3,
+      user: "605c72f82f9b2c001f48d3e1"
     },
     {
       title: "Blog 2",
       author: "Jane Doe",
       url: "http://example.com/second",
-      likes: 5
+      likes: 5,
+      user: "605c72f82f9b2c001f48d3e1"
     }
   ]
 
@@ -21,25 +23,29 @@ const newBlog = {
     title: 'New Blog Post',
     author: 'New Author',
     url: 'http://example.com/newblog',
-    likes: 2
+    likes: 2,
+    user: "671317426e84477ead8c92f1"
 }
 
 const newBlogWithoutLikes = {
     title: 'New Blog Post 0',
     author: 'New Author',
-    url: 'http://example.com/newblog'
+    url: 'http://example.com/newblog',
+    user: "6712b6fc2f01e916464ae090"
 }
 
 const newBlogMissingTitle = {
     author: 'Author without title',
     url: 'http://example.com/missingtitle',
-    likes: 1
+    likes: 1, 
+    user: "6712b6fc2f01e916464ae090"
 }
 
 const newBlogMissingUrl = {
   title: 'Blog without URL',
   author: 'Author without URL',
-  likes: 0
+  likes: 0,
+  user: "6712b6fc2f01e916464ae090"
 }
 
 const newUser = {
@@ -63,7 +69,7 @@ const newUserTooShort  = {
 const newUserWithShortPassword = {
   username: 'validUser',
   name: 'Valid User',
-  password: 'pw'
+  password: 'pw',
 }
 
 const blogsInDb = async () => {
