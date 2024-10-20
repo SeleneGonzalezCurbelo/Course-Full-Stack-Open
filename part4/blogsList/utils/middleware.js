@@ -1,4 +1,6 @@
 const logger = require('./logger')
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 const requestLogger = (request, response, next) => {
   logger.info('Method:', request.method)
@@ -27,7 +29,6 @@ const errorHandler = (error, request, response, next) => {
     return response.status(401).json({
       error: 'invalid token'
     })
-
   } else if (error.name === 'TokenExpiredError') {
     return response.status(401).json({
       error: 'token expired'
@@ -40,19 +41,39 @@ const errorHandler = (error, request, response, next) => {
 const tokenExtractor = (request, response, next) => {
   const authorization = request.get('authorization')
   
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+  if (authorization && authorization.startsWith('Bearer ')) {
     request.token = authorization.substring(7)
   } else {
     request.token = null
   }
-
   next()
 }
 
+const userExtractor = async (request, response, next) => {
+  try {
+    const token = request.token
+    const decodedToken = jwt.verify(token, process.env.SECRET)
+
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'token invalid or expired' })
+    }
+
+    const user = await User.findById(decodedToken.id)
+    if (!user) {
+      return response.status(401).json({ error: 'User not found' })
+    }
+    request.user = user
+    next()
+  } catch (error) {
+    console.error('Error en userExtractor:', error)
+    next(error)
+  }
+}
 
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
-  tokenExtractor
+  tokenExtractor,
+  userExtractor
 }
