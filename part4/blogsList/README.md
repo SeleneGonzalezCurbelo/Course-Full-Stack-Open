@@ -6,6 +6,7 @@
 - [About This Repository](#about-this-repository)
 - [How to Run the Projects](#how-to-run-the-projects)
 - [Running Tests](#running-tests)
+- [Authentication and Authorization](#authentication-and-authorization)
 
 ## About This Repository
 
@@ -13,6 +14,7 @@ A blog list application where users can save information about blogs. For each b
 
 The development includes:
 - Testing
+- Authentication and Authorization
 
 ## How to Run the Projects
 
@@ -32,3 +34,7 @@ To execute the tests for the Blog List application, use the following commands:
 - For User API tests:
   ```bash
   npm test -- tests/user_api_test.js
+
+## Authentication and Authorization
+
+Login restrictions have been implemented. When adding a blog, it will be linked to the user who created it, and only that user will be able to delete the blog. This has been enforced through token-based authentication.

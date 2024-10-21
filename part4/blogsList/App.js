@@ -8,7 +8,7 @@ const loginRouter = require('./controllers/login')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
-const morgan = require('morgan');
+const morgan = require('morgan')
 
 mongoose.set('strictQuery', false)
 
@@ -26,7 +26,7 @@ mongoose.connect(config.MONGODB_URI)
   })
 
 app.use(cors())
-app.use(morgan('dev'));
+app.use(morgan('dev'))
 //app.use(express.static('dist'))
 app.use(express.json())
 app.use(middleware.requestLogger)

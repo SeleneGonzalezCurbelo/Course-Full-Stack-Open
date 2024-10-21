@@ -66,6 +66,18 @@ const newUserTooShort  = {
   password: 'salainen',
 }
 
+const userTest = {
+  username: 'testuser',
+  name: 'Test User',
+  password: 'password'
+}
+
+const blogTest = {
+  title: 'Blog for deletion test',
+  author: 'Test Author',
+  url: 'http://testurl.com',
+}
+
 const newUserWithShortPassword = {
   username: 'validUser',
   name: 'Valid User',
@@ -99,5 +111,7 @@ module.exports = {
     newUser,
     newUserNull,
     newUserTooShort,
-    newUserWithShortPassword
+    newUserWithShortPassword,
+    userTest,
+    blogTest
 }
