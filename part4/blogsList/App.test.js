@@ -228,16 +228,16 @@ describe('most likes', () => {
     }
   ]
 
-  test('when list has multiple blogs, returns the author with the most likes', () => {
+  test('of an empty list is null', () => {
+    const result = listHelper.mostLikes([])
+    expect(result).toBe(null)
+  })
+
+  test('of multiple blogs returns the author with the most likes', () => {
     const result = listHelper.mostLikes(blogs)
     expect(result).toEqual({
       author: 'Author 2',
       likes: 32
     })
-  })
-
-  test('when list is empty, return null', () => {
-    const result = listHelper.mostLikes([])
-    expect(result).toBe(null)
   })
 })
