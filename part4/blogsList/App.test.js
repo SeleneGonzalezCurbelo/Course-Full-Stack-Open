@@ -1,12 +1,10 @@
-const { test, describe } = require('node:test')
-const assert = require('node:assert');
 const listHelper = require('./utils/list_helper')
 
 describe('Dummy function tests', () => {
   test('dummy returns one', () => {
     const blogs = []
     const result = listHelper.dummy(blogs)
-    assert.strictEqual(result, 1)
+    expect(result).toBe(1)
   })
 })
 
@@ -51,17 +49,17 @@ describe('total likes', () => {
 
   test('when list has only one blog, equals the likes of that', () => {
     const result = listHelper.totalLikes(listWithOneBlog)
-    assert.strictEqual(result, 5)
+    expect(result).toBe(5)
   })
 
   test('when list has multiple blogs, equals the sum of likes', () => {
     const result = listHelper.totalLikes(listWithMultipleBlogs)
-    assert.strictEqual(result, 15)
+    expect(result).toBe(15)
   })
 
   test('when list is empty, equals zero', () => {
     const result = listHelper.totalLikes([])
-    assert.strictEqual(result, 0)
+    expect(result).toBe(0)
   })
 })
 
@@ -95,7 +93,7 @@ describe('favorite blog', () => {
 
   test('when list has multiple blogs, return the one with the most likes', () => {
     const result = listHelper.favoriteBlog(blogs)
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       title: 'Blog 2',
       author: 'Author 2',
       likes: 20
@@ -104,13 +102,13 @@ describe('favorite blog', () => {
 
   test('when list is empty, return null', () => {
     const result = listHelper.favoriteBlog([])
-    assert.strictEqual(result, null)
+    expect(result).toBe(null)
   })
 
   test('when list has one blog, return that blog in the correct format', () => {
     const oneBlogList = [blogs[0]]
     const result = listHelper.favoriteBlog(oneBlogList)
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       title: 'Blog 1',
       author: 'Author 1',
       likes: 10
@@ -148,7 +146,7 @@ describe('most blogs', () => {
 
   test('author with most blogs', () => {
     const result = listHelper.mostBlogs(blogs)
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       author: 'Author 2',
       blogs: 2
     })
@@ -156,13 +154,13 @@ describe('most blogs', () => {
 
   test('when list is empty, return null', () => {
     const result = listHelper.mostBlogs([])
-    assert.strictEqual(result, null)
+    expect(result).toBe(null)
   })
 
   test('when list has one blog, return that author with one blog', () => {
     const oneBlogList = [blogs[0]]
     const result = listHelper.mostBlogs(oneBlogList)
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       author: 'Author 1',
       blogs: 1
     })
@@ -207,7 +205,7 @@ describe('most likes', () => {
 
   test('when list has multiple blogs, returns the author with the most likes', () => {
     const result = listHelper.mostLikes(blogs)
-    assert.deepStrictEqual(result, {
+    expect(result).toEqual({
       author: 'Author 2',
       likes: 32
     })
@@ -215,6 +213,6 @@ describe('most likes', () => {
 
   test('when list is empty, return null', () => {
     const result = listHelper.mostLikes([])
-    assert.strictEqual(result, null)
+    expect(result).toBe(null)
   })
 })
