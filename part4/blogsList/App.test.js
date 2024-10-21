@@ -91,7 +91,7 @@ describe('favorite blog', () => {
     }
   ]
 
-  test('when list has multiple blogs, return the one with the most likes', () => {
+  test('of multiple blogs is the one with the most likes', () => {
     const result = listHelper.favoriteBlog(blogs)
     expect(result).toEqual({
       title: 'Blog 2',
@@ -100,12 +100,12 @@ describe('favorite blog', () => {
     })
   })
 
-  test('when list is empty, return null', () => {
+  test('of an empty list is null', () => {
     const result = listHelper.favoriteBlog([])
     expect(result).toBe(null)
   })
 
-  test('when list has one blog, return that blog in the correct format', () => {
+  test('of one blog is that blog in the correct format', () => {
     const oneBlogList = [blogs[0]]
     const result = listHelper.favoriteBlog(oneBlogList)
     expect(result).toEqual({
@@ -113,6 +113,31 @@ describe('favorite blog', () => {
       author: 'Author 1',
       likes: 10
     })
+  })
+
+  test('of multiple blogs with ties is one of the blogs with the most likes', () => {
+    const tiedBlogs = [
+      {
+        _id: '4',
+        title: 'Blog 4',
+        author: 'Author 3',
+        url: 'http://example4.com',
+        likes: 20,
+        __v: 0
+      },
+      {
+        _id: '2',
+        title: 'Blog 2',
+        author: 'Author 2',
+        url: 'http://example2.com',
+        likes: 20,
+        __v: 0
+      }
+    ]
+    const result = listHelper.favoriteBlog(tiedBlogs)
+    expect(result).toEqual(expect.objectContaining({
+      likes: 20
+    }))
   })
 })
 
