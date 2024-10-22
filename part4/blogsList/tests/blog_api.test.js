@@ -175,64 +175,64 @@ describe('POST /api/blogs', () => {
   })
 })
 
+describe('DELETE /api/blogs/:id', () => {
+  let token
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+
+    await api.post('/api/users').send(helper.userTest)
+  
+    const loginResponse = await api
+      .post('/api/login')
+      .send({ username: 'testuser', password: 'password' })
+    token = loginResponse.body.token 
+  
+    const userId = loginResponse.body.id
+  
+    helper.blogTest.userId = userId
+  
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(helper.blogTest)
+    
+    const blogsAtStart = await helper.blogsInDb()
+    expect(blogsAtStart.length).toBe(1)
+  })
+  
+  test('a blog can be deleted', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0] 
+  
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(204) 
+  
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd.length).toBe(blogsAtStart.length - 1) 
+  
+    const ids = blogsAtEnd.map(blog => blog.id)
+    expect(blogToDelete.id).toBeDefined() 
+  })
+  
+  test('responds with 404 if the blog does not exist', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const nonExistingId = await helper.nonExistingId() 
+
+    await api
+      .delete(`/api/blogs/${nonExistingId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(404)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtStart.length).toBe(blogsAtEnd.length)
+  })
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
-
-// describe('DELETE /api/blogs/:id', () => {
-//   let token
-//   beforeEach(async () => {
-//     await Blog.deleteMany({})
-
-//     await api.post('/api/users').send(helper.userTest)
-  
-//     const loginResponse = await api
-//       .post('/api/login')
-//       .send({ username: 'testuser', password: 'password' })
-//     token = loginResponse.body.token 
-  
-//     const userId = loginResponse.body.id
-  
-//     helper.blogTest.userId = userId
-  
-//     await api
-//       .post('/api/blogs')
-//       .set('Authorization', `Bearer ${token}`)
-//       .send(helper.blogTest)
-    
-//     const blogsAtStart = await helper.blogsInDb()
-//     assert.strictEqual(blogsAtStart.length, 1)
-//   })
-  
-//   test('a blog can be deleted', async () => {
-//     const blogsAtStart = await helper.blogsInDb()
-//     const blogToDelete = blogsAtStart[0] 
-  
-//     await api
-//       .delete(`/api/blogs/${blogToDelete.id}`)
-//       .set('Authorization', `Bearer ${token}`)
-//       .expect(204) 
-  
-//     const blogsAtEnd = await helper.blogsInDb()
-//     assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1) 
-  
-//     const ids = blogsAtEnd.map(blog => blog.id)
-//     assert.ok(!ids.includes(blogToDelete.id)) 
-//   })
-  
-//   test('responds with 404 if the blog does not exist', async () => {
-//     const blogsAtStart = await helper.blogsInDb()
-//     const nonExistingId = await helper.nonExistingId() 
-
-//     await api
-//       .delete(`/api/blogs/${nonExistingId}`)
-//       .set('Authorization', `Bearer ${token}`)
-//       .expect(404)
-
-//     const blogsAtEnd = await helper.blogsInDb()
-//     assert.strictEqual(blogsAtStart.length, blogsAtEnd.length)
-//   })
-// })
 
 // describe('PUT /api/blogs/:id', () => {
 //   beforeEach(async () => {
