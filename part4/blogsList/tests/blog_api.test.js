@@ -108,77 +108,76 @@ describe('GET /api/blogs/:id', () => {
   })
 })
 
+describe('POST /api/blogs', () => {
+  let token
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+
+    await api.post('/api/users').send(helper.userTest)
+  
+    const loginResponse = await api
+      .post('/api/login')
+      .send({ username: 'testuser', password: 'password' })
+    token = loginResponse.body.token 
+  
+    const userId = loginResponse.body.id
+  
+    helper.blogTest.userId = userId
+  
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(helper.blogTest)
+    
+    const blogsAtStart = await helper.blogsInDb()
+    expect(blogsAtStart.length).toBe(1)
+  })
+
+  test('a valid blog can be added', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    await api
+      .post('/api/blogs')
+      .send(helper.newBlog)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+      .catch((err) => console.error(err))
+
+      const blogsAtEnd = await helper.blogsInDb()
+      expect(blogsAtEnd.length).toBe(blogsAtStart.length+1)
+  })
+
+  test('a valid blog without likes defaults likes to 0', async () => {
+    const response = await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(helper.newBlogWithoutLikes)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    expect(response.body.likes).toBe(0) 
+  })
+
+  test('fails with status code 400 if title or url are missing', async () => {
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(helper.newBlogMissingTitle)
+      .expect(400)  
+      .expect('Content-Type', /application\/json/)
+
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(helper.newBlogMissingUrl)
+      .expect(400)  
+      .expect('Content-Type', /application\/json/)
+  })
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
-
-// describe('POST /api/blogs', () => {
-//   let token
-//   beforeEach(async () => {
-//     await Blog.deleteMany({})
-
-//     await api.post('/api/users').send(helper.userTest)
-  
-//     const loginResponse = await api
-//       .post('/api/login')
-//       .send({ username: 'testuser', password: 'password' })
-//     token = loginResponse.body.token 
-  
-//     const userId = loginResponse.body.id
-  
-//     helper.blogTest.userId = userId
-  
-//     await api
-//       .post('/api/blogs')
-//       .set('Authorization', `Bearer ${token}`)
-//       .send(helper.blogTest)
-    
-//     const blogsAtStart = await helper.blogsInDb()
-//     assert.strictEqual(blogsAtStart.length, 1)
-//   })
-
-//   test('a valid blog can be added', async () => {
-//     const blogsAtStart = await helper.blogsInDb()
-//     await api
-//       .post('/api/blogs')
-//       .send(helper.newBlog)
-//       .set('Authorization', `Bearer ${token}`)
-//       .expect(201)
-//       .expect('Content-Type', /application\/json/)
-//       .catch((err) => console.error(err))
-
-//       const blogsAtEnd = await helper.blogsInDb()
-//       const response = await api.get('/api/blogs')
-//       assert.strictEqual(blogsAtEnd.length, blogsAtStart.length+1)
-//   })
-
-//   test('a valid blog without likes defaults likes to 0', async () => {
-//     const response = await api
-//       .post('/api/blogs')
-//       .set('Authorization', `Bearer ${token}`)
-//       .send(helper.newBlogWithoutLikes)
-//       .expect(201)
-//       .expect('Content-Type', /application\/json/)
-
-//     assert.strictEqual(response.body.likes, 0) 
-//   })
-
-//   test('fails with status code 400 if title or url are missing', async () => {
-//     await api
-//       .post('/api/blogs')
-//       .set('Authorization', `Bearer ${token}`)
-//       .send(helper.newBlogMissingTitle)
-//       .expect(400)  
-//       .expect('Content-Type', /application\/json/)
-
-//     await api
-//       .post('/api/blogs')
-//       .set('Authorization', `Bearer ${token}`)
-//       .send(helper.newBlogMissingUrl)
-//       .expect(400)  
-//       .expect('Content-Type', /application\/json/)
-//   })
-// })
 
 // describe('DELETE /api/blogs/:id', () => {
 //   let token
