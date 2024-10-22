@@ -230,53 +230,79 @@ describe('DELETE /api/blogs/:id', () => {
   })
 })
 
+describe('PUT /api/blogs/:id', () => {
+  let token
+  
+  beforeEach(async () => {
+    await Blog.deleteMany({})
+
+    await api.post('/api/users').send(helper.userTest)
+  
+    const loginResponse = await api
+      .post('/api/login')
+      .send({ username: 'testuser', password: 'password' })
+    token = loginResponse.body.token 
+  
+    const userId = loginResponse.body.id
+  
+    helper.blogTest.userId = userId
+  
+    await api
+      .post('/api/blogs')
+      .set('Authorization', `Bearer ${token}`)
+      .send(helper.blogTest)
+    
+    const blogsAtStart = await helper.blogsInDb()
+    expect(blogsAtStart.length).toBe(1)
+
+    await Blog.insertMany(helper.initialBlogs) 
+  })
+
+  test('updates the likes of a blog', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const newLikes = Math.floor(Math.random() * 20)
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: newLikes }) 
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200) 
+      .expect('Content-Type', /application\/json/)
+
+    const updatedBlog = await Blog.findById(blogToUpdate.id)
+    expect(updatedBlog.likes).toBe(newLikes) 
+  })
+
+  test('responds with 404 if the blog does not exist', async () => {
+    const nonExistingId = await helper.nonExistingId() 
+
+    await api
+      .put(`/api/blogs/${nonExistingId}`)
+      .send({ likes: Math.floor(Math.random() * 20) }) 
+      .set('Authorization', `Bearer ${token}`)
+      .expect(404)
+  })
+
+  test('responds with 400 if invalid data is provided', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: 'notANumber' }) 
+      .set('Authorization', `Bearer ${token}`)
+      .expect(400)
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send({ likes: -5 }) 
+      .set('Authorization', `Bearer ${token}`)
+      .expect(400)
+  })
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
-
-// describe('PUT /api/blogs/:id', () => {
-//   beforeEach(async () => {
-//     await Blog.deleteMany({})
-//     await Blog.insertMany(helper.initialBlogs)
-//   })
-
-//   test('updates the likes of a blog', async () => {
-//     const blogsAtStart = await helper.blogsInDb()
-//     const blogToUpdate = blogsAtStart[0]
-
-//     const newLikes = Math.floor(Math.random() * 20)
-
-//     await api
-//       .put(`/api/blogs/${blogToUpdate.id}`)
-//       .send({ likes: newLikes }) 
-//       .expect(200) 
-//       .expect('Content-Type', /application\/json/)
-
-//     const updatedBlog = await Blog.findById(blogToUpdate.id)
-//     assert.strictEqual(updatedBlog.likes, newLikes) 
-//   })
-
-//   test('responds with 404 if the blog does not exist', async () => {
-//     const nonExistingId = await helper.nonExistingId() 
-
-//     await api
-//       .put(`/api/blogs/${nonExistingId}`)
-//       .send({ likes: Math.floor(Math.random() * 20) }) 
-//       .expect(404)
-//   })
-
-//   test('responds with 400 if invalid data is provided', async () => {
-//     const blogsAtStart = await helper.blogsInDb()
-//     const blogToUpdate = blogsAtStart[0]
-
-//     await api
-//       .put(`/api/blogs/${blogToUpdate.id}`)
-//       .send({ likes: 'notANumber' }) 
-//       .expect(400)
-
-//     await api
-//       .put(`/api/blogs/${blogToUpdate.id}`)
-//       .send({ likes: -5 }) 
-//       .expect(400)
-//   })
-// })
