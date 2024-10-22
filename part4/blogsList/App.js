@@ -18,11 +18,9 @@ console.log('Iniciando servidor...')
 mongoose.connect(config.MONGODB_URI)
   .then(() => {
     logger.info('connected to MongoDB')
-    console.log('Connected to MongoDB') 
   })
   .catch((error) => {
     logger.error('error connecting to MongoDB:', error.message)
-    console.log('NOOOO Connected to MongoDB') 
   })
 
 app.use(cors())
