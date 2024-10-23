@@ -14,6 +14,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
+  const [visibilityAdd, setVisibilityAdd] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -92,7 +93,7 @@ const App = () => {
         setSuccessMessage(null)
       }, 5000)
     } catch (exception) {
-      setErrorMessage('Logout failed. Please try again.')
+      setErrorMessage('Logout failed. Please try again')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -116,6 +117,7 @@ const App = () => {
         setAuthor('')
         setTitle('')
         setUrl('')
+        setVisibilityAdd(false)
         setSuccessMessage(`A new blog '${returnedBlog.title}' by '${returnedBlog.author}'`)
           setTimeout(() => {
             setSuccessMessage(null)
@@ -127,10 +129,6 @@ const App = () => {
           setErrorMessage(null)
         }, 5000)
       })
-  }
-
-  const handleBlogChange = (event) => {
-    setNewNote(event.target.value)
   }
 
   const blogForm = () => (
@@ -163,8 +161,20 @@ const App = () => {
           />
       </div>
       <button type="submit">Create</button>
+      <button type="button" onClick={handleCancel}>Cancel</button>
     </form>  
   )
+
+  const handleAdd = () => {
+    setVisibilityAdd(!visibilityAdd)
+  }
+
+  const handleCancel = () => {
+    setVisibilityAdd(false) 
+    setTitle('') 
+    setAuthor('') 
+    setUrl('') 
+  }
 
   return (
     <div>
@@ -181,14 +191,24 @@ const App = () => {
             <button onClick={handleLogout}>logout</button>
           </div>
 
-          <h2>Create new</h2>
-
-          {blogForm()}
-
-          <ul>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+          {!visibilityAdd && (
+            <button onClick={handleAdd}>
+              New Blog
+            </button>
           )}
+          
+
+          {visibilityAdd && (
+            <div>
+              <h2>Create new</h2>
+              {blogForm()}
+            </div>
+          )}
+          
+          <ul>
+            {blogs.map(blog =>
+              <Blog key={blog.id} blog={blog} />
+            )}
           </ul>
         </div>
       }
