@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -14,8 +16,10 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
+  const [visibilityAdd, setVisibilityAdd] = useState(false)
 
   useEffect(() => {
+    setVisibilityAdd(false)
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
@@ -56,30 +60,6 @@ const App = () => {
     }
   }
   
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        Username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-      </div>
-      <div>
-        Password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-      </div>
-      <button type="submit">login</button>
-    </form>      
-  )
-
   const handleLogout = () => {
     try {
       window.localStorage.removeItem('loggedBlogappUser')
@@ -92,7 +72,7 @@ const App = () => {
         setSuccessMessage(null)
       }, 5000)
     } catch (exception) {
-      setErrorMessage('Logout failed. Please try again.')
+      setErrorMessage('Logout failed. Please try again')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -116,6 +96,7 @@ const App = () => {
         setAuthor('')
         setTitle('')
         setUrl('')
+        setVisibilityAdd(false)
         setSuccessMessage(`A new blog '${returnedBlog.title}' by '${returnedBlog.author}'`)
           setTimeout(() => {
             setSuccessMessage(null)
@@ -129,42 +110,18 @@ const App = () => {
       })
   }
 
-  const handleBlogChange = (event) => {
-    setNewNote(event.target.value)
+  
+
+  const handleAdd = () => {
+    setVisibilityAdd(!visibilityAdd)
   }
 
-  const blogForm = () => (
-    <form onSubmit={addBlog}>
-      <div>
-        Title:
-          <input
-            type="title"
-            value={title}
-            name="Title"
-            onChange={({ target }) => setTitle(target.value)}
-          />
-      </div>
-      <div>
-        Author:
-          <input
-            type="author"
-            value={author}
-            name="Author"
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-      </div>
-      <div>
-        Url:
-          <input
-            type="url"
-            value={url}
-            name="Url"
-            onChange={({ target }) => setUrl(target.value)}
-          />
-      </div>
-      <button type="submit">Create</button>
-    </form>  
-  )
+  const handleCancel = () => {
+    setVisibilityAdd(false) 
+    setTitle('') 
+    setAuthor('') 
+    setUrl('') 
+  }
 
   return (
     <div>
@@ -174,21 +131,45 @@ const App = () => {
       <Notification message={successMessage} isSuccess={true} />
       
       {user === null ?
-        loginForm() :
+        <LoginForm 
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+        /> :
         <div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <p>{user.name} logged in </p>
             <button onClick={handleLogout}>logout</button>
           </div>
 
-          <h2>Create new</h2>
-
-          {blogForm()}
-
-          <ul>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+          {!visibilityAdd && (
+            <button onClick={handleAdd}>
+              New Blog
+            </button>
           )}
+        
+          {visibilityAdd && (
+            <div>
+              <h2>Create new</h2>
+              <BlogForm
+                title={title}
+                author={author}
+                url={url}
+                setTitle={setTitle} 
+                setAuthor={setAuthor} 
+                setUrl={setUrl} 
+                handleCancel={handleCancel}
+                addBlog={addBlog}
+              />
+            </div>
+          )}
+          
+          <ul>
+            {blogs.map(blog =>
+              <Blog key={blog.id} blog={blog} />
+            )}
           </ul>
         </div>
       }
