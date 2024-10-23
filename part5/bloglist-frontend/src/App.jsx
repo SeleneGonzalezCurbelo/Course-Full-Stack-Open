@@ -7,6 +7,7 @@ import loginService from './services/login'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [errorMessage, setErrorMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [title, setTitle] = useState('') 
@@ -43,8 +44,12 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      setSuccessMessage('Login successful')
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      setErrorMessage('Wrong username or password')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -76,10 +81,22 @@ const App = () => {
   )
 
   const handleLogout = () => {
-    window.localStorage.removeItem('loggedBlogappUser')
-    setUser(null)
-    setUsername('')
-    setPassword('')
+    try {
+      window.localStorage.removeItem('loggedBlogappUser')
+      setUser(null)
+      setUsername('')
+      setPassword('')
+
+      setSuccessMessage('Logged out successfully')
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
+    } catch (exception) {
+      setErrorMessage('Logout failed. Please try again.')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
   }
 
   const addBlog = (event) => {
@@ -99,6 +116,16 @@ const App = () => {
         setAuthor('')
         setTitle('')
         setUrl('')
+        setSuccessMessage(`A new blog '${returnedBlog.title}' by '${returnedBlog.author}'`)
+          setTimeout(() => {
+            setSuccessMessage(null)
+          }, 5000)
+        })
+      .catch(() => {
+        setErrorMessage('Error adding blog')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
       })
   }
 
@@ -143,7 +170,8 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
 
-      <Notification message={errorMessage} />
+      <Notification message={errorMessage} isSuccess={false} />
+      <Notification message={successMessage} isSuccess={true} />
       
       {user === null ?
         loginForm() :

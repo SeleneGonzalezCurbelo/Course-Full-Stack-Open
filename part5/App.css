@@ -1,0 +1,18 @@
+.MessageAdd {
+    color: green;
+    background: lightgrey;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 1%;
+    margin: 2%;
+  }
+  
+  .MessageError {
+    color: red;
+    background: lightgrey;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 1%;
+    margin: 2%;
+  }
+  

@@ -1,3 +1,5 @@
+import '../App.css'
+
 const Notification = ({ message, isSuccess  }) => {
     if (message === null) {
       return null
