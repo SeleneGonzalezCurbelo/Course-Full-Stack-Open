@@ -110,8 +110,6 @@ const App = () => {
       })
   }
 
-  
-
   const handleAdd = () => {
     setVisibilityAdd(!visibilityAdd)
   }
@@ -149,7 +147,6 @@ const App = () => {
               New Blog
             </button>
           )}
-        
           {visibilityAdd && (
             <div>
               <h2>Create new</h2>
@@ -157,11 +154,11 @@ const App = () => {
                 title={title}
                 author={author}
                 url={url}
-                setTitle={setTitle} 
-                setAuthor={setAuthor} 
-                setUrl={setUrl} 
-                handleCancel={handleCancel}
-                addBlog={addBlog}
+                setTitle={setTitle}  
+                setAuthor={setAuthor}  
+                setUrl={setUrl}  
+                handleCancel={handleCancel}  
+                addBlog={addBlog}  
               />
             </div>
           )}
