@@ -16,6 +16,7 @@ A blog list application where users can save information about blogs. For each b
 The development includes:
 - Testing
 - Authentication and Authorization
+- Legacy Testing with Jest
 
 ## How to Run the Projects
 

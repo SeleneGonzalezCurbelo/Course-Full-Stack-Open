@@ -10,6 +10,7 @@
 
 ## About This Repository
 
+Throughout the exercises, the importance of testing is introduced, implementing both unit and integration tests to ensure the correct functioning of the server. Additionally, user administration is covered, with functionality for account creation and management, and token-based authentication.
 
 ## Available Applications
 
@@ -41,4 +42,4 @@ Follow these steps to set up and run the project:
 
 ## Next Project 
 
- - Proceed to Part 5: [Part5](../part5/)
+ - Proceed to Part 5: [Testing React applications](../part5/)

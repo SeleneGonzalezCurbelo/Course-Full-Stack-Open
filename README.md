@@ -28,6 +28,9 @@ The course is divided into parts, each focusing on a key area of full-stack web 
 4. [Testing Express servers, user administration](./part4/)
     - Unit and integration tests for the backend. Additionally, user authentication and authorization.
 
+5. [Testing React applications](./part5/)
+    - This part explores different ways to test React applications and implements token-based authentication for user login.
+ 
 Each folder includes exercises and projects on the concepts learned in the course.
 
 ## Course Overview
