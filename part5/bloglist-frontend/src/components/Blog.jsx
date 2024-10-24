@@ -1,6 +1,6 @@
 import '../App.css'
 
-const Blog = ({ blog, onShowDetails, showDetailsBlog }) => {
+const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike }) => {
   return (
     <div className="blogStyle">
       {blog.title}
@@ -10,7 +10,10 @@ const Blog = ({ blog, onShowDetails, showDetailsBlog }) => {
       <div>
         <p>Author: {blog.author}</p>
         <p>URL: {blog.url}</p>
-        <p>Likes: {blog.likes} <button>Like</button></p>
+        <p>
+          Likes: {blog.likes} 
+          <button onClick={() => handleLike(blog.id)}>Like</button>
+        </p>
       </div>
     )}
     </div>

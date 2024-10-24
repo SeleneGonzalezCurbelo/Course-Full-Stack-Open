@@ -108,6 +108,26 @@ const App = () => {
     setDetailsId(detailsId === id ? null : id)
   }
 
+  const handleLike = async (id) => {
+    const blog = blogs.find(b => b.id === id)
+
+    const updatedBlog = {
+      ...blog,
+      likes: blog.likes + 1,
+      user: blog.id
+    }
+
+    try {
+      const returnedBlog = await blogService.update(id, updatedBlog)
+      setBlogs(blogs.map(b => (b.id !== id ? b : returnedBlog)))
+    } catch (error) {
+      setErrorMessage('Error updating likes')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -151,6 +171,7 @@ const App = () => {
                 blog={blog} 
                 onShowDetails={onShowDetails} 
                 showDetailsBlog={detailsId === blog.id}
+                handleLike ={handleLike }
               />
             )}
           </ul>
