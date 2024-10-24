@@ -20,7 +20,7 @@ The development includes:
 
 ## How to Run the Projects
 
-To run the Anecdotes application, please follow the instructions in the [Part 4 README](../README.md#how-to-run-the-projects).
+To run the Blog application, please follow the instructions in the [Part 4 README](../README.md#how-to-run-the-projects).
 
 <div style="background-color: #ffffff; border-left: 6px solid #2196F3; padding: 10px; color: #000000; margin: 20px 0;">
   <strong>Note:</strong> Make sure you have Node.js and npm installed before continuing.
