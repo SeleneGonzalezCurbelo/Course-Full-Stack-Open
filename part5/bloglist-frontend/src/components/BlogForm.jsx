@@ -1,6 +1,6 @@
-import React from 'react';
+import PropTypes from 'prop-types'
 
-const BlogForm = ({ title, author, url, setTitle, setAuthor, setUrl, handleCancel, addBlog }) => (
+const BlogForm = ({ title, author, url, setTitle, setAuthor, setUrl, addBlog }) => (
   <form onSubmit={addBlog}>
     <div>
       Title:
@@ -32,5 +32,17 @@ const BlogForm = ({ title, author, url, setTitle, setAuthor, setUrl, handleCance
     <button type="submit">Create</button>
   </form>
 )
+
+BlogForm.propTypes = {
+  setTitle: PropTypes.func.isRequired,
+  setTimeout: PropTypes.func.isRequired,
+  setUrl: PropTypes.func.isRequired,
+  addBlog: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+}
+
+BlogForm.displayName = 'BlogForm'
 
 export default BlogForm

@@ -143,14 +143,12 @@ const App = () => {
     }
   }
 
-  return (
-    <div>
-      <h2>Blogs</h2>
-
-      <Notification message={errorMessage} isSuccess={false} />
-      <Notification message={successMessage} isSuccess={true} />
-      
-      {user === null ? (
+  if (!user) {
+    return (
+      <div>
+        <h2>Login</h2>
+        <Notification message={errorMessage} isSuccess={false} />
+        <Notification message={successMessage} isSuccess={true} />
         <Togglable buttonLabel="Login" ref={loginFormRef}>
           <LoginForm 
             username={username}
@@ -160,40 +158,46 @@ const App = () => {
             handleLogin={handleLogin}
           /> 
         </Togglable>
-      ) : (
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <p>{user.name} logged in</p>
-            <button onClick={handleLogout}>logout</button>
-          </div>
+      </div>
+    )
+  }
 
-          <Togglable buttonLabel="New Blog" ref={blogFormRef}>
-            <BlogForm
-              title={title}
-              author={author}
-              url={url}
-              setTitle={setTitle}
-              setAuthor={setAuthor}
-              setUrl={setUrl}
-              addBlog={addBlog}
-            />
-          </Togglable>
+  return (
+    <div>
+      <h2>Blogs</h2>
+      <Notification message={errorMessage} isSuccess={false} />
+      <Notification message={successMessage} isSuccess={true} />
 
-          <ul>
-            {blogs.map(blog => 
-              <Blog 
-                key={blog.id} 
-                blog={blog} 
-                onShowDetails={onShowDetails} 
-                showDetailsBlog={detailsId === blog.id}
-                handleLike ={handleLike}
-                handleRemove={handleRemove}
-                user={user}
-              />
-            )}
-          </ul>
-        </div>
-      )}
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <p>{user.name} logged in</p>
+        <button onClick={handleLogout}>logout</button>
+      </div>
+
+      <Togglable buttonLabel="New Blog" ref={blogFormRef}>
+        <BlogForm
+          title={title}
+          author={author}
+          url={url}
+          setTitle={setTitle}
+          setAuthor={setAuthor}
+          setUrl={setUrl}
+          addBlog={addBlog}
+        />
+      </Togglable>
+
+      <ul>
+        {blogs.map(blog => 
+          <Blog 
+            key={blog.id} 
+            blog={blog} 
+            onShowDetails={onShowDetails} 
+            showDetailsBlog={detailsId === blog.id}
+            handleLike ={handleLike}
+            handleRemove={handleRemove}
+            user={user}
+          />
+        )}
+      </ul>
     </div>
   )
 }

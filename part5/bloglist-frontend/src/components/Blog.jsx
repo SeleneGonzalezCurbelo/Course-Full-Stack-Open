@@ -1,4 +1,5 @@
 import '../App.css'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, user }) => {
 
@@ -22,5 +23,27 @@ const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, 
     </div>
   )
 }
+
+Blog.propTypes = {
+  blog: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
+    author: PropTypes.string.isRequired,
+    user: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+  onShowDetails: PropTypes.func.isRequired,
+  showDetailsBlog: PropTypes.bool.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleRemove: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.string,
+  }),
+}
+
+Blog.displayName = 'Blog'
 
 export default Blog
