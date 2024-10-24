@@ -67,7 +67,7 @@ const App = () => {
     setUser(null)
     setUsername('')
     setPassword('')
-
+    setDetailsId(null)
     setSuccessMessage('Logged out successfully')
     setTimeout(() => {
       setSuccessMessage(null)
@@ -128,6 +128,21 @@ const App = () => {
     }
   }
 
+  const handleRemove = async (id) => {
+    if (window.confirm('Are you sure you want to delete this blog?')) {
+      try {
+        await blogService.remove(id)
+        setBlogs(blogs.filter(blog => blog.id !== id))
+        setSuccessMessage('Blog deleted successfully')
+      } catch (error) {
+        setErrorMessage('Error deleting blog')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+    }
+  }
+
   return (
     <div>
       <h2>Blogs</h2>
@@ -171,7 +186,9 @@ const App = () => {
                 blog={blog} 
                 onShowDetails={onShowDetails} 
                 showDetailsBlog={detailsId === blog.id}
-                handleLike ={handleLike }
+                handleLike ={handleLike}
+                handleRemove={handleRemove}
+                user={user}
               />
             )}
           </ul>
