@@ -8,12 +8,12 @@ const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike }) => {
 
     {showDetailsBlog && (
       <div>
-        <p>Author: {blog.author}</p>
-        <p>URL: {blog.url}</p>
+        <p>URL: <a href={blog.url}>{blog.url}</a></p>
         <p>
           Likes: {blog.likes} 
           <button onClick={() => handleLike(blog.id)}>Like</button>
         </p>
+        <p>Author: {blog.author}</p>
       </div>
     )}
     </div>

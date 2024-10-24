@@ -19,13 +19,13 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [detailsId, setDetailsId] = useState(null)
   
-  const blogFormRef = useRef() // Ref para el formulario de crear blog
-  const loginFormRef = useRef() // Ref para el formulario de login
+  const blogFormRef = useRef() 
+  const loginFormRef = useRef()
   
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )  
+    blogService.getAll().then(blogs => {
+      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
+    })  
   }, [user])
 
   useEffect(() => {
@@ -118,8 +118,8 @@ const App = () => {
     }
 
     try {
-      const returnedBlog = await blogService.update(id, updatedBlog)
-      setBlogs(blogs.map(b => (b.id !== id ? b : returnedBlog)))
+      await blogService.update(id, updatedBlog)
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog).sort((a, b) => b.likes - a.likes))
     } catch (error) {
       setErrorMessage('Error updating likes')
       setTimeout(() => {
