@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -16,12 +17,14 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
-  const [visibilityAdd, setVisibilityAdd] = useState(false)
-
+  const [detailsId, setDetailsId] = useState(null)
+  
+  const blogFormRef = useRef() // Ref para el formulario de crear blog
+  const loginFormRef = useRef() // Ref para el formulario de login
+  
   useEffect(() => {
-    setVisibilityAdd(false)
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      setBlogs(blogs)
     )  
   }, [user])
 
@@ -36,7 +39,6 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
     try {
       const user = await loginService.login({
         username, password,
@@ -61,22 +63,15 @@ const App = () => {
   }
   
   const handleLogout = () => {
-    try {
-      window.localStorage.removeItem('loggedBlogappUser')
-      setUser(null)
-      setUsername('')
-      setPassword('')
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
+    setUsername('')
+    setPassword('')
 
-      setSuccessMessage('Logged out successfully')
-      setTimeout(() => {
-        setSuccessMessage(null)
-      }, 5000)
-    } catch (exception) {
-      setErrorMessage('Logout failed. Please try again')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
-    }
+    setSuccessMessage('Logged out successfully')
+    setTimeout(() => {
+      setSuccessMessage(null)
+    }, 5000)
   }
 
   const addBlog = (event) => {
@@ -96,7 +91,6 @@ const App = () => {
         setAuthor('')
         setTitle('')
         setUrl('')
-        setVisibilityAdd(false)
         setSuccessMessage(`A new blog '${returnedBlog.title}' by '${returnedBlog.author}'`)
           setTimeout(() => {
             setSuccessMessage(null)
@@ -110,15 +104,8 @@ const App = () => {
       })
   }
 
-  const handleAdd = () => {
-    setVisibilityAdd(!visibilityAdd)
-  }
-
-  const handleCancel = () => {
-    setVisibilityAdd(false) 
-    setTitle('') 
-    setAuthor('') 
-    setUrl('') 
+  const onShowDetails = (id) => {
+    setDetailsId(detailsId === id ? null : id)
   }
 
   return (
@@ -128,48 +115,47 @@ const App = () => {
       <Notification message={errorMessage} isSuccess={false} />
       <Notification message={successMessage} isSuccess={true} />
       
-      {user === null ?
-        <LoginForm 
-          username={username}
-          password={password}
-          setUsername={setUsername}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
-        /> :
+      {user === null ? (
+        <Togglable buttonLabel="Login" ref={loginFormRef}>
+          <LoginForm 
+            username={username}
+            password={password}
+            setUsername={setUsername}
+            setPassword={setPassword}
+            handleLogin={handleLogin}
+          /> 
+        </Togglable>
+      ) : (
         <div>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <p>{user.name} logged in </p>
+            <p>{user.name} logged in</p>
             <button onClick={handleLogout}>logout</button>
           </div>
 
-          {!visibilityAdd && (
-            <button onClick={handleAdd}>
-              New Blog
-            </button>
-          )}
-          {visibilityAdd && (
-            <div>
-              <h2>Create new</h2>
-              <BlogForm
-                title={title}
-                author={author}
-                url={url}
-                setTitle={setTitle}  
-                setAuthor={setAuthor}  
-                setUrl={setUrl}  
-                handleCancel={handleCancel}  
-                addBlog={addBlog}  
-              />
-            </div>
-          )}
-          
+          <Togglable buttonLabel="New Blog" ref={blogFormRef}>
+            <BlogForm
+              title={title}
+              author={author}
+              url={url}
+              setTitle={setTitle}
+              setAuthor={setAuthor}
+              setUrl={setUrl}
+              addBlog={addBlog}
+            />
+          </Togglable>
+
           <ul>
-            {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} />
+            {blogs.map(blog => 
+              <Blog 
+                key={blog.id} 
+                blog={blog} 
+                onShowDetails={onShowDetails} 
+                showDetailsBlog={detailsId === blog.id}
+              />
             )}
           </ul>
         </div>
-      }
+      )}
     </div>
   )
 }

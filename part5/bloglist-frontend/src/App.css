@@ -5,14 +5,27 @@
     border-radius: 5px;
     padding: 1%;
     margin: 2%;
-  }
+}
   
-  .MessageError {
+.MessageError {
     color: red;
     background: lightgrey;
     border-style: solid;
     border-radius: 5px;
     padding: 1%;
     margin: 2%;
+}
+
+.blogStyle {
+    padding-top: 10px;
+    padding-left:  2px;
+    border: 1px solid black;
+    border-width: 1px;
+    margin-bottom: 5px;
   }
-  
+
+button {
+    border-radius: 15%;
+    border-color: white;
+    height: 10%;
+}

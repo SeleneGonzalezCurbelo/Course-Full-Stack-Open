@@ -30,7 +30,6 @@ const BlogForm = ({ title, author, url, setTitle, setAuthor, setUrl, handleCance
       />
     </div>
     <button type="submit">Create</button>
-    <button type="button" onClick={handleCancel}>Cancel</button>
   </form>
 )
 
