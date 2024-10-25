@@ -1,29 +1,32 @@
 import PropTypes from 'prop-types'
 
 const BlogForm = ({ title, author, url, setTitle, setAuthor, setUrl, addBlog }) => (
-  <form onSubmit={addBlog}>
+  <form onSubmit={addBlog} role="form">
     <div>
-      Title:
+      <label htmlFor="title">Title:</label>
       <input
         type="text" 
+        id="title"
         value={title}
         name="Title"
         onChange={({ target }) => setTitle(target.value)}
       />
     </div>
     <div>
-      Author:
+      <label htmlFor="author">Author:</label>
       <input
         type="text" 
+        id="author"
         value={author}
         name="Author"
         onChange={({ target }) => setAuthor(target.value)}
       />
     </div>
     <div>
-      Url:
+      <label htmlFor="url">Url:</label>
       <input
         type="url"
+        id="url"
         value={url}
         name="Url"
         onChange={({ target }) => setUrl(target.value)}
@@ -35,7 +38,6 @@ const BlogForm = ({ title, author, url, setTitle, setAuthor, setUrl, addBlog }) 
 
 BlogForm.propTypes = {
   setTitle: PropTypes.func.isRequired,
-  setTimeout: PropTypes.func.isRequired,
   setUrl: PropTypes.func.isRequired,
   addBlog: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,

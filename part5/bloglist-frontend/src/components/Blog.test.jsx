@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
+import BlogForm from './BlogForm'
 
 describe('Blog component', () => {
     test('renders the title and author, but not URL or likes by default', () => {
@@ -99,5 +100,43 @@ describe('Blog component', () => {
         fireEvent.click(likeButton)
         fireEvent.click(likeButton)
         expect(mockHandleLike).toHaveBeenCalledTimes(2)
+    })
+})
+
+describe('BlogForm component', () => {
+    test('calls the addBlog handler with the correct details when a new blog is created', () => {
+      const mockSetTitle = vi.fn()
+      const mockSetAuthor = vi.fn()
+      const mockSetUrl = vi.fn()
+      const mockAddBlog = vi.fn()
+  
+      render(
+        <BlogForm 
+          title="" 
+          author="" 
+          url="" 
+          setTitle={mockSetTitle} 
+          setAuthor={mockSetAuthor} 
+          setUrl={mockSetUrl} 
+          addBlog={mockAddBlog} 
+        />
+      )
+  
+      const titleInput = screen.getByLabelText(/title/i)
+      const authorInput = screen.getByLabelText(/author/i)
+      const urlInput = screen.getByLabelText(/url/i)
+      const form = screen.getByRole('form')
+  
+      fireEvent.change(titleInput, { target: { value: 'New Blog Title' } })
+      fireEvent.change(authorInput, { target: { value: 'New Author' } })
+      fireEvent.change(urlInput, { target: { value: 'http://example.com' } })
+  
+      fireEvent.submit(form)
+  
+      expect(mockSetTitle).toHaveBeenCalledWith('New Blog Title')
+      expect(mockSetAuthor).toHaveBeenCalledWith('New Author')
+      expect(mockSetUrl).toHaveBeenCalledWith('http://example.com')
+  
+      expect(mockAddBlog).toHaveBeenCalledTimes(1)
     })
 })
