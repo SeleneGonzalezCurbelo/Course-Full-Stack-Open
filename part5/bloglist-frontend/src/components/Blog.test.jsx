@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
 
 describe('Blog component', () => {
@@ -68,5 +68,36 @@ describe('Blog component', () => {
         const likesElement = screen.queryByText(/Likes: 2/i)
         expect(urlElement).toBeInTheDocument()
         expect(likesElement).toBeInTheDocument()
+    })
+
+    test('calls event handler twice when the like button is clicked twice', () => {
+        const blog = {
+            id: '1',
+            title: 'New Blog Post',
+            author: 'New Author',
+            url: 'http://example.com/newblog',
+            likes: 2,
+            user: { id: "671317426e84477ead8c92f1" }
+        }
+
+        const mockHandleLike = vi.fn()
+        const mockHandleRemove = vi.fn()
+        const mockOnShowDetails = vi.fn()
+
+        render(
+            <Blog 
+                blog={blog}
+                onShowDetails={mockOnShowDetails} 
+                showDetailsBlog={true}  
+                handleLike={mockHandleLike} 
+                handleRemove={mockHandleRemove} 
+                user={{ id: '671317426e84477ead8c92f1' }} 
+            />
+        )
+
+        const likeButton = screen.getByText('Like')
+        fireEvent.click(likeButton)
+        fireEvent.click(likeButton)
+        expect(mockHandleLike).toHaveBeenCalledTimes(2)
     })
 })
