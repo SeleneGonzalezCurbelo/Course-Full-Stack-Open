@@ -36,7 +36,7 @@ describe('Blog component', () => {
         expect(likesElement).not.toBeInTheDocument()
     })
 
-    test('renders the title, author, URL and likes', () => {
+    test('shows URL and likes when the "View" button is clicked', () => {
         const blog = {
             id: '1',
             title: 'New Blog Post',
