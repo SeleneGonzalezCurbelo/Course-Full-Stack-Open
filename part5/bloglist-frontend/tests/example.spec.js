@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, request } from '@playwright/test'
 
 test.describe('playwright', () => {
   test('has title', async ({ page }) => {
@@ -18,13 +18,39 @@ test.describe('playwright', () => {
 })
 
 test.describe('Blog app', () => {
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, request }) => {
+    await request.post('http:localhost:3001/api/testing/reset')
+    await request.post('http://localhost:3001/api/users', {
+      data: {
+        username: 'userPrueba',
+        name: 'User Test',
+        password: 'prueba'
+      }
+    })
+
     await page.goto('http://localhost:5173')
+    await page.getByRole('button', { name: 'login' }).click()
   })
 
   test('Login form is shown', async ({ page }) => {
-    await expect(page.getByRole('button', { name: 'login' })).toBeVisible()
     await page.getByRole('button', { name: 'login' }).click()
     await expect(page.getByRole('form', { name: 'loginForm' })).toBeVisible()
   })
+
+  test.describe('Login', () => {
+    test('succeeds with correct credentials', async ({ page }) => {      
+      await page.getByTestId('username').fill('userPrueba')
+      await page.getByTestId('password').fill('prueba')
+      await page.getByRole('button', { name: 'login' }).click()
+      await expect(page.getByText('Login successful')).toBeVisible()
+    })
+
+    test('fails with wrong credentials', async ({ page }) => {
+      await page.getByTestId('username').fill('noprueba')
+      await page.getByTestId('password').fill('prueba')
+      await page.getByRole('button', { name: 'login' }).click()
+      await expect(page.getByText('Wrong username or password')).toBeVisible()
+    })
+  })
 })
+
