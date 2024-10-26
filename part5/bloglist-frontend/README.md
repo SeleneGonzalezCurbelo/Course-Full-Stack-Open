@@ -31,7 +31,6 @@ To run the Frontend Blog List application, please follow the instructions in the
 - To check your code for any linting issues, run the following command:
   ```bash
   npm run lint
-
 ## Testing
 
 - To run tests using Vitest, use the following command:

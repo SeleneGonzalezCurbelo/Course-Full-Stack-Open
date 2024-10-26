@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 const LoginForm = ({ username, password, setUsername, setPassword, handleLogin }) => (
-    <form onSubmit={handleLogin}>
+    <form id="loginForm" aria-label="loginForm" onSubmit={handleLogin}>
       <div>
         Username
           <input
@@ -20,7 +20,7 @@ const LoginForm = ({ username, password, setUsername, setPassword, handleLogin }
             onChange={({ target }) => setPassword(target.value)}
           />
       </div>
-      <button type="submit">login</button>
+      <button id="loginButton" type="submit">login</button>
     </form>      
   )
 

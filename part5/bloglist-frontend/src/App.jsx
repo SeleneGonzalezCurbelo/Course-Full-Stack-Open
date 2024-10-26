@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
-import LoginForm from './components/LoginForm'
+import LoginForm from './components/LoginForm.jsx'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -165,9 +165,10 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification message={errorMessage} isSuccess={false} />
-      <Notification message={successMessage} isSuccess={true} />
-
+      <div>
+        <Notification message={errorMessage} isSuccess={false} />
+        <Notification message={successMessage} isSuccess={true} />
+      </div>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <p>{user.name} logged in</p>
         <button onClick={handleLogout}>logout</button>
