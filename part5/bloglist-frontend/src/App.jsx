@@ -91,7 +91,7 @@ const App = () => {
         setAuthor('')
         setTitle('')
         setUrl('')
-        setSuccessMessage(`A new blog '${returnedBlog.title}' by '${returnedBlog.author}'`)
+        setSuccessMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author}`)
           setTimeout(() => {
             setSuccessMessage(null)
           }, 5000)
