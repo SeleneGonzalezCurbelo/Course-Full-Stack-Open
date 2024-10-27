@@ -74,7 +74,7 @@ test.describe('When logged in', () => {
     await expect(page.getByText('Login successful')).toBeVisible()
   })
 
-  test('a new blog can be created', async ({ page, request }) => {
+  test('a new blog can be created', async ({ page }) => {
     await page.getByTestId('title').fill('blogPrueba')
     await page.getByTestId('author').fill('Author Test')
     await page.getByTestId('url').fill('http://localhost:5173/')

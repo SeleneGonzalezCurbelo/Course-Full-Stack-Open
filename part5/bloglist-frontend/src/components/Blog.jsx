@@ -1,7 +1,19 @@
+import { useRef, useState } from 'react'
 import '../App.css'
 import PropTypes from 'prop-types'
+import Togglable from './Togglable'
 
-const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, user }) => {
+const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, handleUpdate, user }) => {
+  const updateFormRef = useRef()
+  const [updatedTitle, setUpdatedTitle] = useState(blog.title)
+  const [updatedAuthor, setUpdatedAuthor] = useState(blog.author)
+  const [updatedUrl, setUpdatedUrl] = useState(blog.url)
+
+  const submitUpdate = (e) => {
+    e.preventDefault()
+    handleUpdate(String(blog.id), { id: blog.id, title: updatedTitle, author: updatedAuthor, url: updatedUrl })
+    updateFormRef.current.toggleVisibility() 
+  }
 
   return (
     <div className="blogStyle">
@@ -16,8 +28,30 @@ const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, 
             Likes: {blog.likes} 
             <button onClick={() => handleLike(blog.id)}>Like</button>
           </p>
-          {user && blog.user && user.id === blog.user.id && ( 
-            <button className="buttonRemove" onClick={() => handleRemove(blog.id)}>Remove</button>
+          {user && blog.user && (typeof blog.user === 'string' ? user.id === blog.user : user.id === blog.user.id) && (
+            <>
+              <button className="buttonRemove" onClick={() => handleRemove(blog.id)}>Remove</button>
+              <Togglable buttonLabel="Update" ref={updateFormRef}>
+                <form onSubmit={submitUpdate} className="blog-edit-form">
+                  <input 
+                    value={updatedTitle}
+                    onChange={(e) => setUpdatedTitle(e.target.value)}
+                    placeholder="Title"
+                  />
+                  <input 
+                    value={updatedAuthor}
+                    onChange={(e) => setUpdatedAuthor(e.target.value)}
+                    placeholder="Author"
+                  />
+                  <input 
+                    value={updatedUrl}
+                    onChange={(e) => setUpdatedUrl(e.target.value)}
+                    placeholder="URL"
+                  />
+                  <button type="submit">Save</button>
+                </form>
+              </Togglable>
+            </>
           )}
         </div>
     )}
@@ -32,14 +66,18 @@ Blog.propTypes = {
     url: PropTypes.string.isRequired,
     likes: PropTypes.number.isRequired,
     author: PropTypes.string.isRequired,
-    user: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-    }),
+    user: PropTypes.oneOfType([
+      PropTypes.string, 
+      PropTypes.shape({
+        id: PropTypes.string.isRequired,
+      }),
+    ]),
   }).isRequired,
   onShowDetails: PropTypes.func.isRequired,
   showDetailsBlog: PropTypes.bool.isRequired,
   handleLike: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,
+  handleUpdate: PropTypes.func.isRequired,
   user: PropTypes.shape({
     id: PropTypes.string,
   }),

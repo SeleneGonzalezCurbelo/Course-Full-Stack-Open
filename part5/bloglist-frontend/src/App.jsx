@@ -114,7 +114,7 @@ const App = () => {
     const updatedBlog = {
       ...blog,
       likes: blog.likes + 1,
-      user: blog.id
+      user: user.id
     }
 
     try {
@@ -122,6 +122,31 @@ const App = () => {
       setBlogs(blogs.map(blog => blog.id !== id ? blog : updatedBlog).sort((a, b) => b.likes - a.likes))
     } catch (error) {
       setErrorMessage('Error updating likes')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+  const handleUpdate = async (id, updatedData) => {
+    const blog = blogs.find(b => b.id === id)
+
+    const updatedBlog = {
+      ...updatedData,
+      likes: blog.likes,
+      user: { id: user.id }
+    }
+
+    try {
+      const returnedBlog = await blogService.update(id, updatedBlog)
+      console.log('Returned blog:', returnedBlog) 
+      setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+      setSuccessMessage('Blog updated successfully')
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
+    } catch (error) {
+      setErrorMessage('Error updating blog')
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
@@ -195,6 +220,7 @@ const App = () => {
             showDetailsBlog={detailsId === blog.id}
             handleLike ={handleLike}
             handleRemove={handleRemove}
+            handleUpdate={handleUpdate}
             user={user}
           />
         )}
