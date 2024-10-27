@@ -139,7 +139,6 @@ const App = () => {
 
     try {
       const returnedBlog = await blogService.update(id, updatedBlog)
-      console.log('Returned blog:', returnedBlog) 
       setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
       setSuccessMessage('Blog updated successfully')
       setTimeout(() => {

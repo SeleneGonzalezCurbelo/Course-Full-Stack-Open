@@ -20,7 +20,7 @@ const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, 
       <div className="blog-title">
         <p>{blog.title} by {blog.author}</p>
       </div>
-      <button onClick={() => onShowDetails(blog.id)}>{showDetailsBlog ? 'Hide' : 'View'}</button>
+      <button  onClick={() => onShowDetails(blog.id)}>{showDetailsBlog ? 'Hide' : 'View'}</button>
       {showDetailsBlog && (
         <div className="blog-details">
           <p className="blog-url">URL: <a href={blog.url}>{blog.url}</a></p>
@@ -34,16 +34,19 @@ const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, 
               <Togglable buttonLabel="Update" ref={updateFormRef}>
                 <form onSubmit={submitUpdate} className="blog-edit-form">
                   <input 
+                    data-testid="newTitle"
                     value={updatedTitle}
                     onChange={(e) => setUpdatedTitle(e.target.value)}
                     placeholder="Title"
                   />
                   <input 
+                    data-testid="newAuthor"
                     value={updatedAuthor}
                     onChange={(e) => setUpdatedAuthor(e.target.value)}
                     placeholder="Author"
                   />
                   <input 
+                    data-testid="newURL"
                     value={updatedUrl}
                     onChange={(e) => setUpdatedUrl(e.target.value)}
                     placeholder="URL"

@@ -83,5 +83,20 @@ test.describe('When logged in', () => {
     await page.waitForTimeout(5000)
     await expect(page.getByText('blogPrueba by Author Test')).toBeVisible()
   })
+
+  test('a blog can be edit', async ({ page }) => {
+    await page.getByTestId('title').fill('blogPrueba')
+    await page.getByTestId('author').fill('Author Test')
+    await page.getByTestId('url').fill('http://localhost:5173/')
+    await page.getByRole('button', { name: 'create' }).click()
+    await page.waitForTimeout(5000)
+    await page.getByRole('button', { name: 'view' }).click()  
+    await page.getByRole('button', { name: 'update' }).click()  
+    await page.getByTestId('newTitle').fill('blogPruebaaaaa')
+    await page.getByRole('button', { name: 'save' }).click()  
+    await expect(page.getByText('Blog updated successfully')).toBeVisible()
+    await page.waitForTimeout(5000)
+    await expect(page.getByText('blogPruebaaaaa')).toBeVisible()
+  })
 })
 

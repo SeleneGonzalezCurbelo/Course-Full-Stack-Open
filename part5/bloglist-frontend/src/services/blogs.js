@@ -43,13 +43,4 @@ const remove = async id => {
   return response.data
 }
 
-const updateBlog = async id => {
-  const config = {
-    headers: { Authorization: token },
-  }
-
-  const response = await axios.update(`${baseUrl}/${id}`, config)
-  return response.data
-}
-
-export default { getAll, setToken, create, update, remove, updateBlog }
+export default { getAll, setToken, create, update, remove }
