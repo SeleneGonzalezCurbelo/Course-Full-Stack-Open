@@ -65,6 +65,13 @@ test.describe('When logged in', () => {
         password: 'prueba'
       }
     })
+    await request.post('http://localhost:3001/api/users', {
+      data: {
+        username: 'userPrueba2',
+        name: 'Other User',
+        password: 'prueba'
+      }
+    })
 
     await page.goto('http://localhost:5173')
     await page.getByRole('button', { name: 'login' }).click()
@@ -106,6 +113,23 @@ test.describe('When logged in', () => {
     await page.getByRole('button', { name: 'remove' }).click()  
     await page.waitForTimeout(5000)
     await expect(page.getByText('Blog deleted successfully')).toBeVisible()
+  })
+
+  test('only the creator can see the delete button', async ({ page, request }) => {
+    await page.getByRole('button', { name: 'logout' }).click()
+
+    await page.getByRole('button', { name: 'login' }).click()
+    await page.getByTestId('username').fill('userPrueba2')
+    await page.getByTestId('password').fill('prueba')
+    await page.getByRole('button', { name: 'login' }).click()
+    await expect(page.getByText('Login successful')).toBeVisible()
+    
+    await page.waitForTimeout(5000)
+    const lastBlog = page.locator('[data-testid="blog-item"]').last()
+    await expect(lastBlog.getByRole('button', { name: 'view' })).toBeVisible()
+    await lastBlog.getByRole('button', { name: 'view' }).click()
+    await page.waitForTimeout(5000)
+    await expect(lastBlog.getByRole('button', { name: 'remove' })).not.toBeVisible();
   })
 })
 

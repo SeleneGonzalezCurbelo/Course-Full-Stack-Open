@@ -16,7 +16,7 @@ const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, 
   }
 
   return (
-    <div className="blogStyle">
+    <div className="blogStyle" data-testid="blog-item"> 
       <div className="blog-title">
         <p>{blog.title} by {blog.author}</p>
       </div>
