@@ -72,23 +72,20 @@ test.describe('When logged in', () => {
     await page.getByTestId('password').fill('prueba')
     await page.getByRole('button', { name: 'login' }).click()
     await expect(page.getByText('Login successful')).toBeVisible()
-  })
 
-  test('a new blog can be created', async ({ page }) => {
     await page.getByTestId('title').fill('blogPrueba')
     await page.getByTestId('author').fill('Author Test')
     await page.getByTestId('url').fill('http://localhost:5173/')
     await page.getByRole('button', { name: 'create' }).click()
+  })
+
+  test('a new blog can be created', async ({ page }) => {
     await expect(page.getByText('A new blog blogPrueba by Author Test', { exact: true })).toBeVisible()
     await page.waitForTimeout(5000)
     await expect(page.getByText('blogPrueba by Author Test')).toBeVisible()
   })
 
   test('a blog can be edit', async ({ page }) => {
-    await page.getByTestId('title').fill('blogPrueba')
-    await page.getByTestId('author').fill('Author Test')
-    await page.getByTestId('url').fill('http://localhost:5173/')
-    await page.getByRole('button', { name: 'create' }).click()
     await page.waitForTimeout(5000)
     await page.getByRole('button', { name: 'view' }).click()  
     await page.getByRole('button', { name: 'update' }).click()  
@@ -97,6 +94,18 @@ test.describe('When logged in', () => {
     await expect(page.getByText('Blog updated successfully')).toBeVisible()
     await page.waitForTimeout(5000)
     await expect(page.getByText('blogPruebaaaaa')).toBeVisible()
+  })
+
+  test('a blog can be delete', async ({ page }) => {
+    await page.waitForTimeout(5000)
+    await page.getByRole('button', { name: 'view' }).click() 
+    page.on('dialog', async (dialog) => {
+      expect(dialog.message()).toEqual('Are you sure you want to delete this blog?')
+      await dialog.accept()
+    })
+    await page.getByRole('button', { name: 'remove' }).click()  
+    await page.waitForTimeout(5000)
+    await expect(page.getByText('Blog deleted successfully')).toBeVisible()
   })
 })
 
