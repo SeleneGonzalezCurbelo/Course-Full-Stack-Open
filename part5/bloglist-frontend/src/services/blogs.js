@@ -8,8 +8,13 @@ const getAll = async () => {
     headers: { Authorization: token }
   }
   
-  const response = await axios.get(baseUrl, config)
-  return response.data
+  try {
+    const response = await axios.get(baseUrl, config)
+    return response.data
+  } catch (error) {
+    console.error("Error fetching blogs:", error)
+    throw error
+  }
 }
 
 const setToken = newToken => {

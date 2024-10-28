@@ -18,14 +18,22 @@ const App = () => {
   const [url, setUrl] = useState('')
   const [user, setUser] = useState(null)
   const [detailsId, setDetailsId] = useState(null)
-  
+
   const blogFormRef = useRef() 
   const loginFormRef = useRef()
   
   useEffect(() => {
-    blogService.getAll().then(blogs => {
-      setBlogs(blogs.sort((a, b) => b.likes - a.likes))
-    })  
+    try {
+      blogService.getAll()
+        .then(blogs => {
+          setBlogs(blogs.sort((a, b) => b.likes - a.likes));
+        })
+        .catch(error => {
+          console.error("Error fetching blogs:", error);
+        });
+    } catch (error) {
+      console.error("Unexpected error:", error);
+    }
   }, [user])
 
   useEffect(() => {
@@ -173,7 +181,7 @@ const App = () => {
         <h2>Login</h2>
         <Notification message={errorMessage} isSuccess={false} />
         <Notification message={successMessage} isSuccess={true} />
-        <Togglable buttonLabel="Login" ref={loginFormRef}>
+        <Togglable buttonLabel="Show Login" ref={loginFormRef}>
           <LoginForm 
             username={username}
             password={password}
