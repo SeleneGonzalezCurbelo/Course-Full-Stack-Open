@@ -17,14 +17,14 @@ const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, 
 
   return (
     <div className="blogStyle" data-testid="blog-item"> 
-      <div className="blog-title">
+      <div className="blog-title" data-testid="blog-title">
         <p>{blog.title} by {blog.author}</p>
       </div>
       <button  onClick={() => onShowDetails(blog.id)}>{showDetailsBlog ? 'Hide' : 'View'}</button>
       {showDetailsBlog && (
         <div className="blog-details">
           <p className="blog-url">URL: <a href={blog.url}>{blog.url}</a></p>
-          <p className="blog-likes">
+          <p data-testid="likes-count" className="blog-likes">
             Likes: {blog.likes} 
             <button onClick={() => handleLike(blog.id)}>Like</button>
           </p>

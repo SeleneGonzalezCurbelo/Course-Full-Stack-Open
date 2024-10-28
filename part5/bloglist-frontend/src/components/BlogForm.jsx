@@ -5,7 +5,7 @@ const BlogForm = ({ title, author, url, setTitle, setAuthor, setUrl, addBlog }) 
     <div>
       <label htmlFor="title">Title:</label>
       <input
-        data-testid="title"
+        data-testid="blog-title"
         type="text" 
         id="title"
         value={title}
