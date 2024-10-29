@@ -39,6 +39,7 @@ const BlogForm = ({ title, author, url, setTitle, setAuthor, setUrl, addBlog }) 
   </form>
 )
 
+
 BlogForm.propTypes = {
   setTitle: PropTypes.func.isRequired,
   setUrl: PropTypes.func.isRequired,
