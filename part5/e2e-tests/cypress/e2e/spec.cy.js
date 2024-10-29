@@ -135,5 +135,35 @@ describe('Blog app', function() {
       cy.get('.MessageAdd').should('have.css', 'border-style', 'solid')
       cy.get('.MessageAdd').should('have.css', 'color', 'rgb(0, 128, 0)')
     })
+
+    it('Only the creator can see the delete button', function() {
+      const user = {
+        username: 'userPrueba2',
+        name: 'User Test2',
+        password: 'prueba'
+      }
+      cy.request('POST', 'http://localhost:3001/api/users', user)
+
+      cy.visit('http://localhost:5173')
+      cy.contains('logout').click()
+      cy.contains('Show Login').click()
+      cy.get('#username').type('userPrueba2')
+      cy.get('#password').type('prueba')
+      cy.get('#login-button').click()
+
+      cy.contains('Blog A by Author A').should('be.visible')
+      cy.contains('Blog A by Author A')
+      .closest('[data-testid="blog-item"]') 
+      .find('button')
+      .contains('View')
+      .click()
+      
+      cy.contains('Blog A by Author A').should('be.visible')
+      cy.contains('Blog A by Author A')
+      .closest('[data-testid="blog-item"]') 
+      .find('button')
+      .contains('Remove')
+      .should('not.exist')
+    })
   })
 })
