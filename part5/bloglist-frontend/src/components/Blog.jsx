@@ -16,7 +16,7 @@ const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, 
   }
 
   return (
-    <div className="blogStyle" data-testid="blog-item"> 
+    <div className="blogStyle" id="blog-item" data-testid="blog-item"> 
       <div className="blog-title" data-testid="blog-title">
         <p>{blog.title} by {blog.author}</p>
       </div>
@@ -24,7 +24,7 @@ const Blog = ({ blog, onShowDetails, showDetailsBlog, handleLike, handleRemove, 
       {showDetailsBlog && (
         <div className="blog-details">
           <p className="blog-url">URL: <a href={blog.url}>{blog.url}</a></p>
-          <p data-testid="likes-count" className="blog-likes">
+          <p id="likes-count" data-testid="likes-count" className="blog-likes">
             Likes: {blog.likes} 
             <button onClick={() => handleLike(blog.id)}>Like</button>
           </p>

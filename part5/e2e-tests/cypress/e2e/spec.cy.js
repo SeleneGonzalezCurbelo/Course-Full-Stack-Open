@@ -165,5 +165,32 @@ describe('Blog app', function() {
       .contains('Remove')
       .should('not.exist')
     })
+
+    it('Blogs are ordered by likes', function() {
+      const headers = {
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json'
+      }
+      const blogs = [
+        { title: 'Blog B', author: 'Author B', url: 'http://localhost/blog-b', likes: 5, user: user1.id },
+        { title: 'Blog C', author: 'Author C', url: 'http://localhost/blog-c', likes: 7, user: user1.id },
+      ]
+      blogs.forEach(blog => {
+        cy.request({
+          method: 'POST',
+          url: 'http://localhost:3001/api/blogs',
+          headers: headers,
+          body: blog,
+        }).then((response) => {
+          expect(response.status).to.eq(201)
+        })
+        cy.visit('http://localhost:5173')
+      })
+      cy.visit('http://localhost:5173')
+      cy.wait(1000)
+      cy.get('.blogStyle').eq(0).should('contain', 'Blog A')
+      cy.get('.blogStyle').eq(1).should('contain', 'Blog C')
+      cy.get('.blogStyle').eq(2).should('contain', 'Blog B')
+    })
   })
 })
