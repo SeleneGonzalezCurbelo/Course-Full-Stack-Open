@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-- [Blog List](#blog-list)
+- [Backend Blog List](#backend-blog-list)
 - [About This Repository](#about-this-repository)
 - [How to Run the Projects](#how-to-run-the-projects)
 - [Running Tests](#running-tests)
@@ -40,7 +40,9 @@ If you wish to run the legacy tests using Jest, you can do so with the following
   - ```bash
     npm test
 This will run all Jest tests contained in the project.
-
+To run the server in a test environment, use the following command:
+  - ```bash
+    npm start:test
 ## Authentication and Authorization
 
 Login restrictions have been implemented. When adding a blog, it will be linked to the user who created it, and only that user will be able to delete the blog. This has been enforced through token-based authentication.

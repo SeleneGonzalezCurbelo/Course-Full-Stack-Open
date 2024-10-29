@@ -19,6 +19,8 @@ This repository contains frontend and backend integration.
 2. [Blog List Frontend](./bloglist-frontend)  
     - The frontend is a React application that interacts with the backend to allow users to view, create, like, and delete blog posts.
         - GitHub Repository: [Blog List Frontend](https://github.com/fullstack-hy2020/bloglist-frontend)
+3. [End-to-End (E2E)](./e2e-tests/)
+    - It uses Cypress to perform end-to-end (E2E) testing.
 
 ## How to Run the Projects
 

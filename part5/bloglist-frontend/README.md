@@ -2,7 +2,7 @@
 
 ## Table of Contents
 
-- [Blog List](#blog-list)
+- [Frontend Blog List](#frontend-blog-list)
 - [About This Repository](#about-this-repository)
 - [How to Run the Projects](#how-to-run-the-projects)
 - [ESlint](#eslint)
@@ -17,6 +17,7 @@ This repository focuses on the development of the Frontend Blog List application
 - Proptypes
 - ESlint
 - Testing
+- Playwright
 
 ## How to Run the Projects
 
@@ -36,3 +37,6 @@ To run the Frontend Blog List application, please follow the instructions in the
 - To run tests using Vitest, use the following command:
   ```bash
   npm run test
+- Once the tests are finished, you can see a detailed report by running:
+  ```bash
+  npm run test:report

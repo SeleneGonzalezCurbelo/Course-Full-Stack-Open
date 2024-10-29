@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 
 const BlogForm = ({ title, author, url, setTitle, setAuthor, setUrl, addBlog }) => (
-  <form className="blog" data-testid="blog-item" onSubmit={addBlog} role="form">
+  <form className="blog" id="blog-item" data-testid="blog-item" onSubmit={addBlog} role="form">
     <div>
       <label htmlFor="title">Title:</label>
       <input
