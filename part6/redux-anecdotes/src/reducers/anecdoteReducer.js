@@ -40,11 +40,6 @@ const reducer = (state = initialState, action) => {
         ...state,
         anecdotes: [...state.anecdotes, action.payload]
       }
-    case 'SET_FILTER':
-      return {
-        ...state,
-        filter: action.payload
-      }
     default:
       return state
   }
@@ -65,13 +60,6 @@ export const addAnecdote = (content) => {
       votes: 0,
       id: getId() 
     }
-  }
-}
-
-export const setFilter = (filter) => {
-  return {
-    type: 'SET_FILTER',
-    payload: filter,
   }
 }
 
