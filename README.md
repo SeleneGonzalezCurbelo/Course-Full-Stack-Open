@@ -30,6 +30,9 @@ The course is divided into parts, each focusing on a key area of full-stack web 
 
 5. [Testing React applications](./part5/)
     - This part explores different ways to test React applications and implements token-based authentication for user login.
+
+6. [Advanced state management](./part6/)
+    - Introduction to Redux for state management.  React Query is also covered
  
 Each folder includes exercises and projects on the concepts learned in the course.
 

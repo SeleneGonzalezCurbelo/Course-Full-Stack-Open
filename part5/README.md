@@ -53,4 +53,4 @@ The frontend will be available on port 5173.
 
 ## Next Project 
 
- - Proceed to Part 6: [Part6](../part6/)
+ - Proceed to Part 6: [Advanced state management](../part6/)
