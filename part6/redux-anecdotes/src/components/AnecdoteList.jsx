@@ -21,17 +21,20 @@ const AnecdoteList = () => {
 
     return (
         <div>
-            {sortedAnecdotes.map(anecdote =>
+            {sortedAnecdotes.length === 0 ? (
+                <div>No anecdotes were found that matched the filter</div>
+            ) : (
+            sortedAnecdotes.map(anecdote =>
                 <div key={anecdote.id}>
-                <div>
-                    {anecdote.content}
+                    <div>
+                        {anecdote.content}
+                    </div>
+                    <div>
+                        has {anecdote.votes}
+                        <button onClick={() => vote(anecdote.id)}>vote</button>
+                    </div>
                 </div>
-                <div>
-                    has {anecdote.votes}
-                    <button onClick={() => vote(anecdote.id)}>vote</button>
-                </div>
-                </div>
-            )}
+            ))}
         </div>
     )
 }
