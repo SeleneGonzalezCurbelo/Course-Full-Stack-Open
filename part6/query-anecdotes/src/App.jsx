@@ -1,7 +1,7 @@
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getAnecdotes, createAnecdote } from './requests'
+import { getAnecdotes, createAnecdote, updateAnecdote } from './requests'
 import { useState } from 'react'
 
 const App = () => {
@@ -10,11 +10,27 @@ const App = () => {
 
   const newAnecdoteMutation = useMutation({
     mutationFn: createAnecdote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
-      setNotification('Anécdota añadida con éxito')
+    onSuccess: (newAnecdote) => {
+      const anecdotes = queryClient.getQueryData(['anecdotes'])
+      queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote))
+      setNotification('Anecdote successfully added')
       setTimeout(() => {
         setNotification('') 
+      }, 5000)
+    },
+  })
+
+  const updateAnecdoteMutation = useMutation({
+    mutationFn: updateAnecdote,
+    onSuccess: (updatedAnecdote) => {
+      queryClient.setQueryData(['anecdotes'], (oldAnecdotes) => 
+        oldAnecdotes.map(anecdote => 
+          anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote
+        )
+      )
+      setNotification(`You voted for "${updatedAnecdote.content}"`)
+      setTimeout(() => {
+        setNotification('')
       }, 5000)
     },
   })
@@ -37,11 +53,12 @@ const App = () => {
 
   const handleVote = (anecdote) => {
     console.log('vote')
+    updateAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes+1})
   }
 
   const addAnecdote = (content) => {
     if (content.length < 5) {
-      setNotification('El contenido de la anécdota debe tener al menos 5 caracteres.')
+      setNotification('The content of the anecdote must be at least 5 characters')
       setTimeout(() => {
         setNotification('')
       }, 5000)

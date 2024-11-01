@@ -17,6 +17,7 @@
 
 2. [Unicafe Redux](./unicafe-redux) 
     - Unicafe is an application that simulates a comment registration system. Users can increment and reset values ​​using the Flux architecture along with Redux.
+3. [Query Anecdotes](./query-anecdotes)
 
 ## How to Run the Projects
 
