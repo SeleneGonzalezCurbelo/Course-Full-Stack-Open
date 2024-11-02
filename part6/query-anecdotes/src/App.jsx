@@ -3,9 +3,12 @@ import Notification from './components/Notification'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getAnecdotes, createAnecdote, updateAnecdote } from './requests'
 import { useState } from 'react'
+import notificationReducer from './reducers/notificationReducer'
+import { useReducer } from 'react'
 
 const App = () => {
-  const [notification, setNotification] = useState('')
+  //const [notification, setNotification] = useState('')
+  const [notification, notificationDispatch] = useReducer(notificationReducer, '')
   const queryClient = useQueryClient()
 
   const newAnecdoteMutation = useMutation({
@@ -13,9 +16,9 @@ const App = () => {
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData(['anecdotes'])
       queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote))
-      setNotification('Anecdote successfully added')
+      notificationDispatch({ type: 'SET_NOTIFICATION', payload: 'Anecdote successfully added' })
       setTimeout(() => {
-        setNotification('') 
+        notificationDispatch({ type: 'CLEAR_NOTIFICATION' }) 
       }, 5000)
     },
   })
@@ -28,9 +31,9 @@ const App = () => {
           anecdote.id === updatedAnecdote.id ? updatedAnecdote : anecdote
         )
       )
-      setNotification(`You voted for "${updatedAnecdote.content}"`)
+      notificationDispatch({ type: 'SET_NOTIFICATION', payload: `You voted for "${updatedAnecdote.content}"` })
       setTimeout(() => {
-        setNotification('')
+        notificationDispatch({ type: 'CLEAR_NOTIFICATION' })
       }, 5000)
     },
   })
@@ -58,9 +61,9 @@ const App = () => {
 
   const addAnecdote = (content) => {
     if (content.length < 5) {
-      setNotification('The content of the anecdote must be at least 5 characters')
+      notificationDispatch({ type: 'SET_NOTIFICATION', payload: 'The content of the anecdote must be at least 5 characters' })
       setTimeout(() => {
-        setNotification('')
+        notificationDispatch({ type: 'CLEAR_NOTIFICATION' })
       }, 5000)
       return
     }
